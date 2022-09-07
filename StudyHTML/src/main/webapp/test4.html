@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<!-- 
+	<form> 태그
+	- 사용자와 웹어플리케이션(사이트)간의 상호 작용이 가능하도록 해주는 태그(기술)
+	- 사용자로부터 입력하는 데이터 형식을 제공하는 태그들을 묶어주는 태그이며
+	  입력된 데이터를 다른 페이지로 전송하는 역할을 수행하는 태그
+	  => 전송되는 데이터는 서버측(JSP 등 = 백엔드)에서 처리할 수 있음
+	- <form></form> 형식으로 사용하며 시작태그와 끝태그 사이에 또 다른 form 태그가 올 수 없음 
+	
+	< form 태그 내부에서 사용 가능한 태그 >
+	1. <input type="text"> : 사용자로부터 텍스트 한 줄 입력받는 속성
+	2. <input type="number"> : 사용자로부터 숫자를 입력받는 속성
+	3. <input type="password"> : 사용자로부터 텍스트 한 줄 입력받는 속성(입력 데이터 숨김 처리)
+	4. <input type="checkbox"> : 사용자로부터 복수개의 항목을 체크하도록 하는 속성(체크박스)
+	5. <input type="radio"> : 사용자로부터 단일 항목을 선택하도록 하는 속성(라디오버튼)
+	   => 주의! name 속성값이 같은 항목끼리만 그룹화를 통해 단일 항목 선택이 가능하도록 변경됨
+	6. <input type="date"> : 사용자로부터 날짜를 선택하도록 하는 속성(캘린더 선택 또는 입력 가능)
+	7. <input type="button"> : 클릭 동작을 받도록 하는 속성(별도의 기능 연결 필요 - 자바스크립트)
+	8. <input type="submit"> : 버튼과 생김새 동일하나 <form> 태그 내의 입력 항목들을
+	                           action 속성에 지정된 위치로 전송 및 이동하는 역할
+	9. <input type="reset"> : 버튼과 생김새 동일하나 <form> 태그 내의 입력 항목들에 
+	                          입력된 데이터를 초기화하는 역할
+	---------------------------------------------------------------------------------------------
+	7. <select></select> & <option></option>
+	   : 사용자로부터 option 태그에 지정된 항목을 선택하도록 하는 태그(셀렉트박스 또는 콤보박스)
+	8. <textarea></textarea> : 여러 줄을 입력받을 수 있는 태그
+	-->
+	
+	<!-- 입력 양식을 하나로 묶어줄 form 태그 지정 -->
+	<form action="test4_result.html">
+		<!-- <input> 태그를 사용하여 기본 입력 항목 생성 가능 -->
+		<!-- type 속성을 조정하여 다양한 형식의 입력이 가능하도록 변경 가능 -->
+		<!-- type="text" 속성 지정 시 키보드로 텍스트 한 줄 입력이 가능한 입력창 표시 -->
+		<input type="text"><br>
+		<input type="text" placeholder="이름을 입력하세요"><br>
+		<!-- value 속성 지정 시 속성값에 해당하는 값을 입력창에 표시 -->
+		<input type="text" name="name" value="홍길동"><br>
+		<!-- readonly 속성 지정 시 입력창 잠금(= 데이터 입력 불가 = 읽기 전용) -->
+		<input type="text" value="홍길동" readonly="readonly"><br>
+		
+		<!-- type="number" 지정 시 숫자 입력만 가능한 창 -->
+		<input type="number"><br>
+		
+		<!-- type="password" 지정 시 입력 항목 숨김 처리 -->
+		<input type="password" placeholder="패스워드를 입력하세요"><br>
+		
+		<hr>
+		
+		<!-- type="checkbox" 지정 시 복수개의 항목 체크가 가능한 체크박스 생성 -->
+		취미 : 
+		<input type="checkbox">등산
+		<!-- checked="checked" 속성 지정 시 해당 체크박스 기본 체크 -->
+		<input type="checkbox" checked="checked">영화감상
+		<input type="checkbox" id="programming"><label for="programming">프로그래밍</label>
+		<br>
+		
+		<!-- type="radio" 지정 시 복수개의 항목 중 단일 선택이 가능한 라디오버튼 생성 -->
+		<!-- 주의! 단일 선택이 가능하려면 그룹화 필수! 모든 항목의 name 속성값이 같아야 함 -->
+		성별 : 
+		<input type="radio" name="gender">남
+		<input type="radio" name="gender" checked="checked">여
+		<br>
+		
+		날짜 : 
+		<input type="date"> <!-- 날짜 입력 -->
+		<input type="button" value="검색"> <!-- 버튼(텍스트 표시를 위해 value 속성 설정) -->
+		
+		<hr>
+		
+		직업 : 
+		<select>
+			<option>직업을 선택하세요</option>
+			<option selected="selected">개발자</option> <!-- 기본 선택 -->
+			<option disabled="disabled">건물주(선택불가)</option>
+			<option>아르바이트생</option>
+		</select>
+		
+		<hr>
+		
+		자기소개 : 
+		<textarea rows="5" cols="20"></textarea>
+		
+		<hr>
+		
+		<input type="submit" value="가입">
+		<input type="reset" value="초기화">
+	</form>
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
