@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	// var 와 let의 차이점
+	var num1 = 10;
+	document.write(num1+"<br>");
+	
+	var num1 = "홍길동";
+	document.write(num1+"<br>");
+	
+	let num2 = 10;
+	document.write(num2+"<br>");
+	
+// 	let num2 = "홍길동";
+// 	document.write(num2+"<br>");
+	
+	num2 = 100;
+	document.write(num2+"<br>");
+
+	const num3 = 99;
+	document.write(num3+"<br>");
+	
+	num3 = 199;
+	document.write(num3+"<br>");
+</script>
+</head>
+<body>
+	<script type="text/javascript">
+// 		alert("body 태그 내의 자바스크립트");
+		document.write("이 곳은 body 영역 h1 태그 앞입니다.");
+		
+	</script>
+
+	<h1>이 곳은 body 태그 영역입니다.</h1>
+	
+	<script>
+		document.write("이 곳은 body 영역 h1 태그 뒤입니다");
+	</script>
+
+</body>
+</html>

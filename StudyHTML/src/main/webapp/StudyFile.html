@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>회원가입</h1>
+<form>
+	<table border="1">
+		<tr>
+			<td>이름</td>
+			<td colspan="3"><input type="text" name="name"></td>
+		</tr>	
+	 	
+	 	<tr>
+	 		<td>ID</td>
+	 		<td>
+	 		<input type ="text" name="id" placeholder="4~8글자 사이를 입력하세요.">
+	 		<input type="button" value="중복확인">
+	 		</td>
+	 	
+	 		
+	 	</tr>
+	
+		<tr>
+			<td>비밀번호</td>
+			<td><input type="password" name="pw"> </td>
+		</tr>
+		
+		<tr>
+			<td>비밀번호확인</td>
+			<td><input type="password" name="pw"> </td>
+		</tr>
+		
+		<tr>
+			<td>주민등록번호</td>
+			<td><input type="text"> - <input type="password"></td>
+		</tr>
+		
+		<tr>
+			<td>이메일</td>
+			<td><input type="text">@<input type="text">
+				<select> 
+					<option select="selected">직업을 선택하세요</option>
+					<option>naver.com</option> 
+					<option>nate.com</option>
+					<option>google.com</option>
+			</select>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>직업</td>
+			<td>
+				<select>
+					<option select="selected">항목을 선택하시오.</option>
+					<option>개발자</option> 
+					<option>선생님</option>
+					<option>학생</option>
+				</select>
+			</td>
+		</tr>		
+	
+		<tr>
+			<td>성별</td>
+			<td><input type="radio" name="gender">남
+					  <input type="radio" name="gender">여
+			</td>
+		</tr>
+	
+		<tr>
+			<td>취미</td>
+			<td>
+				<input type="checkbox">여행
+				<input type="checkbox">독서
+				<input type="checkbox">게임
+				<input type="checkbox">전체선택
+			</td>
+		</tr>
+		
+		<tr>
+			<td>가입동기</td>
+			<td><textarea rows="10" cols="30"></textarea></td>
+		</tr>
+	
+		<tr>
+			<td colspan="2">
+				<input type="submit" value="가입">
+				<input type="reset" value="초기화">
+				<input type="submit" value="돌아가기">
+			</td>
+		</tr>
+	</table>
+
+</form>
+</body>
+</html>
