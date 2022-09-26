@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+/*
+이벤트(Event) 
+- 특정 대상(요소)에 어떤 사건(행위)이 발생하는 것(= 신호)
+  ex) 마우스 '클릭', 키보드 '키 누름', 마우스 '커서 오버', 대상을 '선택' 등
+- 이벤트 발생 시 해당 이벤트에 대한 감지를 통해 이벤트 처리 해야함
+  => 이벤트 발생 시 특정 동작을 수행하는 것을 이벤트 처리(Event Handling)라고 함
+  ex) '버튼'을 '클릭'하면 이벤트 발생 이라는 '메세지 출력'
+- 이벤트 핸들링을 위해서는 이벤트 감지에 필요한 onXXX 속성을 대상 태그에 지정하고
+  해당 이벤트가 발생하면 수행할 작업을 속성값으로 지정해야함
+  ex) <button onclick="alert('이벤트 발생')"> => 버튼 클릭 시 "이벤트 발생" 메세지 출력됨
+- 대표적인 이벤트 종류(onXXX)
+  1) click : 마우스 클릭,  dblclick : 마우스 더블클릭
+  2) mouseover : 마우스가 대상 위에 위치(= mouseenter 와 유사), mouseout : 마우스가 대상 빠져나감
+  3) focus : 대상이 선택됨(= 포커스가 위치함), blur : 대상 선택이 해제됨(= 포커스 잃음)
+  4) load : 대상 로딩 완료됨, unload : 대상 로딩 해제됨
+  5) keydown : 키보드의 키 누름, keyup : 키보드의 키 뗌
+  6) submit : 폼 데이터 전송, reset : 폼 데이터 초기화
+
+이벤트 핸들러(Event Handler)
+- 이벤트 발생 시 수행할 동작을 기술해 놓은 함수 또는 객체
+- 이벤트가 발생되면 자동으로 onXXX 속성에 해당하는 함수 또는 객체 실행
+*/
+	function clickButton() {
+		alert("버튼2 클릭됨!");
+    }
+	
+	function mouseover() {
+		document.getElementById("mouseResultArea").innerHTML = "마우스오버";
+	}
+	  
+	function mouseout() {
+		document.getElementById("mouseResultArea").innerHTML = "마우스아웃";
+	}
+	
+	function changeImage() {
+		// "img" 라는 id 선택자를 지정하여 해당 객체 가져오기
+		let imgElem = document.getElementById("img");
+		// 전달받은 img 태그 객체의 src 속성값을 변경하여 다른 이미지 표시
+		imgElem.src = "2.jpg"; // 기존의 1.jpg -> 새로운 2.jpg 로 이미지 변경
+	}
+	
+	function changeImage2() {
+		let imgElem = document.getElementById("img");
+		imgElem.src = "1.jpg";
+	}
+	
+	// 이름 입력 창에 색상 변경 작업 수행하는 함수 정의
+	function changeColor(color) {
+		// 이름 입력창의 배경색을 전달받은 색상으로 변경
+		let textElem = document.getElementById("name");
+		textElem.style.background = color;
+	}
+	
+	// 파라미터로 img 태그 객체와 색상값을 전달받는 함수 정의 
+	function changeColor2(elem, color) {
+		// document.getElementById() 메서드 등의 호출 없이 전달받은 객체 그대로 접근 가능
+		elem.style.background = color;
+	}
+	
+	function changeColorTr(trElem, color) {
+		trElem.style.background = color;
+	}
+	
+	// this.value 를 통해 id 입력창의 입력값(value 속성값)을 전달받는 함수 정의
+	function checkId(id) {
+		// span 태그 영역(checkIdResult) 객체 가져오기
+		let spanElem = document.getElementById("checkIdResult");
+		
+		// 입력받은 아이디(id 변수값)가 "admin" 인지 판별(임시)
+		// => 만약, "admin" 일 경우 span 태그 영역에 "사용 불가능한 아이디" 출력(글자색 RED)
+		//    아니면, span 태그 영역에 "사용 가능한 아이디" 출력(글자색 GREEN)
+		if(id == "admin") {
+			spanElem.innerHTML = "사용 불가능한 아이디";
+			spanElem.style.color = "RED";
+		} else {
+			spanElem.innerHTML = "사용 가능한 아이디";
+			spanElem.style.color = "GREEN";
+		}
+		
+		
+		
+	}
+	
+	function checkId2(id) {
+		// span 태그 영역(checkIdResult) 객체 가져오기
+		let spanElem = document.getElementById("checkIdResult2");
+		
+		// 입력받은 아이디(id 변수값)가 "admin" 인지 판별(임시)
+		// => 만약, "admin" 일 경우 span 태그 영역에 "사용 불가능한 아이디" 출력(글자색 RED)
+		//    아니면, span 태그 영역에 "사용 가능한 아이디" 출력(글자색 GREEN)
+		if(id == "admin") {
+			alert("사용 불가능한 아이디");
+			spanElem.innerHTML = "사용 불가능한 아이디";
+			spanElem.style.color = "RED";
+		} else {
+			alert("사용 가능한 아이디");
+			spanElem.innerHTML = "사용 가능한 아이디";
+			spanElem.style.color = "GREEN";
+		}
+		
+	}
+</script>
+</head>
+<body>
+	<h1>test10.html</h1>
+	
+	<!-- "클릭" 버튼 클릭(onclick) 시 alert() 함수를 사용하여 "버튼 클릭됨!" 출력 -->
+	<input type="button" value="클릭" onclick="alert('버튼 클릭됨!')">
+	
+	<!-- "클릭2" 버튼 클릭 시 clickButton() 함수를 호출하여 "버튼2 클릭됨!" 출력 -->
+	<button onclick="clickButton()">클릭2</button>
+	
+	<!-- "마우스를 가져다 대세요" 버튼에 mouseover, mouseout 이벤트 처리 -->
+	<!-- 하나의 대상에 복수개의 이벤트 연결 가능 -->
+<!-- 	<button onmouseover="alert('마우스오버!')"  -->
+<!-- 			onmouseout="alert('마우스아웃')">마우스를 가져다 대세요</button> -->
+	<button onmouseover="mouseover()" onmouseout="mouseout()">마우스를 가져다 대세요</button>
+	<div id="mouseResultArea"></div>
+	
+	<hr>
+	
+	<!-- "이미지 교체" 버튼 클릭 시 기존에 표시된 이미지를 다른 이미지로 대체(교체) -->
+	<!-- 이미지에 마우스를 가져다대면 "2.jpg", 마우스를 밖으로 빼면 "1.jpg" 로 교체 -->
+	<img src="1.jpg" id="img" width="150" height="150" 
+			onmouseover="document.getElementById('img').src = '2.jpg'" 
+			onmouseout="document.getElementById('img').src = '1.jpg'"><br>
+	<button onclick="changeImage()">이미지교체</button>
+	<button onclick="changeImage2()">이미지복원</button>
+	
+	<hr>
+	
+	<!-- 
+	이름 입력받는 입력창에 포커스가 위치(onfocus)하면 입력창 색을 "SKYBLUE" 색상으로 변경,
+	포커스가 해제(onblur)되면 "WHITE" 로 변경
+	=> 이 때, 하나의 함수에 색상명을 전달하여 구분하도록 정의
+	-->
+	이름 : <input type="text" id="name" 
+				onfocus="changeColor('SKYBLUE')" onblur="changeColor('WHITE')"><br>
+	<!-- onXXX 이벤트에서 함수 호출 시 파라미터로 this 전달할 경우 해당 태그 객체 직접 전달 -->
+	<!-- getElementById() 등으로 객체를 가져올 필요없이 전달받은 객체 그대로 사용 가능 -->
+	나이 : <input type="text" id="age" 
+				onfocus="changeColor2(this, '#FFCCCC')" onblur="changeColor2(this, 'WHITE')">
+	<hr>
+	
+	<table border="1">
+		<tr><th colspan="4">테이블 연습</th></tr>
+		<!-- 테이블의 행(tr)에 마우스를 가져다 대면 changeColorTr() 함수 호출 -->
+		<!-- 함수 호출 시 파라미터에 현재 tr 태그 객체와 변경할 색상을 전달 -->
+		<!-- 마우스를 가져다대면 '#FFCCCC' 색상으로 변경, 빼면 'WHITE' 로 변경 -->
+		<tr onmouseover="changeColorTr(this, '#FFCCCC')" onmouseout="changeColorTr(this, 'WHITE')">
+			<td>1-1</td><td>1-2</td><td>1-3</td><td>1-4</td>
+		</tr>
+		<tr onmouseover="changeColorTr(this, '#FFCCCC')" onmouseout="changeColorTr(this, 'WHITE')">
+			<td>2-1</td><td>2-2</td><td>2-3</td><td>2-4</td>
+		</tr>
+		<tr onmouseover="changeColorTr(this, '#FFCCCC')" onmouseout="changeColorTr(this, 'WHITE')">
+			<td>3-1</td><td>3-2</td><td>3-3</td><td>3-4</td>
+		</tr>
+	</table>
+	
+	<hr>
+	
+	<!-- 아이디 입력란에 글자 입력할 때마다 아이디 비교하여 결과를 span 영역에 출력하기 -->
+	<!-- 글자 입력할 때 = 키를 누를 때 또는 키를 뗄 때 -->
+	<!-- 이 때, 특정 요소의 속성값을 함수 파라미터로 전달하려면 this.속성명 사용(ex. this.value) -->
+	아이디 <input type="text" placeholder="아이디 입력" onkeyup="checkId(this.value)">
+	<!-- div 와 span 차이 : div 는 한 줄 모두 차지, span 은 다른 요소와 어울리게 배치 -->
+	<span id="checkIdResult"></span>
+	<br>
+	<!-- 
+	onchange 는 onkeyXXX 과 달리 키를 누를때마다 동작하는 것이 아니라
+	해당 요소의 내용이 변경되고 포커스가 빠져나갈 때 동작함(변경되지 않으면 동작X)
+	-->
+	아이디 <input type="text" placeholder="아이디 입력" onchange="checkId2(this.value)">
+	<span id="checkIdResult2"></span>
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

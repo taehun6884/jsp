@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+// 	let btnChangeImg = document.getElementById("btnChangeImg");
+// 	alert(btnChangeImg);
+	// => 위의 코드가 실행되는 시점에서는 body 태그 내의 요소가 로딩되기 전이므로
+	//    특정 대상 요소 지정 시 null 값이 리턴됨(요소 접근 불가)
+	// => 따라서, onload 이벤트를 사용하여 body 영역 로딩이 끝난 후에 작업 수행해야함
+	//    (또는 버튼 등을 클릭했을 때 동작하는 이벤트로 처리는 가능)
+	function load() {
+		alert("load()");
+	}
+	
+	// body 태그에  onload="load()" 속성 지정 대신 window.onload 도 동일한 이벤트
+	window.onload = function() {
+		alert("load2()");
+	};
+</script>
+</head>
+<body> <!--  onload="load()" -->
+	<h1>test11.html</h1>
+	<!-- "이미지 교체" 버튼 클릭 시 기존에 표시된 이미지를 다른 이미지로 대체(교체) -->
+	<!-- 이미지에 마우스를 가져다대면 "2.jpg", 마우스를 밖으로 빼면 "1.jpg" 로 교체 -->
+	<img src="1.jpg" id="img" width="150" height="150"><br>
+	<button id="btnChangeImg">이미지교체</button>
+	<button id="btnRecoveryImg">이미지복원</button>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

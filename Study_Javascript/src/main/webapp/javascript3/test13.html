@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	// [ form 태그 내의 각 요소에 접근하는 방법 ]
+	// document.form태그name속성값.접근할태그name속성값.속성명 또는
+	// document.form태그name속성값.접근할태그name속성값.함수명()
+	// => 속성명 : name, type, value 등
+	// => 함수 : focus() : 대상에 커서(포커스) 요청
+	//           blur() : 대상에서 포커스 해제
+	//           select() : 대상에 포커스 요청 및 입력 항목값 블럭 지정 
+	function requestFocus() {
+		// 폼태그(name 속성값이 fr) 내의 아이디 입력받는 텍스트 상자(name 속성값이 id)에 접근
+		// => 해당 요소에 포커스(커서) 요청
+		document.fr.id.focus();
+	}
+	
+	function showInfo() {
+		// 폼 태그 내의 입력 항목 데이터(아이디, 패스워드, 자기소개) 가져와서 출력
+		// => 입력 데이터 가져오기 : document.폼이름.name속성명.value
+		document.querySelector("#infoArea").innerHTML = 
+			"아이디 : " + document.fr.id.value + "<br>" + 
+			"패스워드 : " + document.fr.passwd.value + "<br>" + 
+			"자기소개 :  " + document.fr.ta.value + "<br>";
+	}
+	
+	function check() {
+		
+	}
+</script>
+</head>
+<body>
+	<h1>test13.html - form 태그 이벤트</h1>
+	<form action="test13_2.html" name="fr">
+		아이디 <input type="text" name="id">
+		<input type="button" value="focus()" onclick="requestFocus()">
+		<!-- 버튼 클릭 시 폼 태그 요소에 접근하여 작업 수행하는 코드 직접 기술 -->
+		<input type="button" value="blur()" onclick="document.fr.id.blur()">
+		<input type="button" value="select()" onclick="document.fr.id.select()">
+		<br>
+		<!-- 패스워드 항목을 input type="text" 타입으로 지정 시 입력 패스워드 노출됨 -->
+<!-- 		패스워드 <input type="text" name="passwd">  -->
+		패스워드 <input type="password" name="passwd"> <!-- 입력 패스워드 노출되지 않음 -->
+		<br>
+		자기소개 <textarea rows="5" cols="20" name="ta"></textarea>
+		<br>
+		<input type="button" value="입력값 출력" onclick="showInfo()">
+		<input type="button" value="입력값 확인" onclick="check()">
+		<input type="submit" value="회원가입">
+	</form>
+	<div id="infoArea"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	/*
+	test4.html 에서 현재 파일(test4_new_window.html 파일)을 사용하여 새 창 열어놓은 상태
+	이 때, test4.html 파일은 부모창이고, test4_new_window.html 파일로 연 창을 자식창이라고 할 때
+	자식창에서 부모창 제어도 가능
+	=> window.opener 객체 사용하여 부모창에 접근
+	*/
+	function showMessage() {
+		// 자신의 창에 alert() 함수를 사용하여 메세지 출력
+		alert("자식창 메세지 출력");
+	}	
+	
+	function showMessage2() {
+		// 부모창에서 alert() 함수가 실행되도록 하기
+		window.opener.alert("자식창에서 요청한 메세지를 부모창에서 출력");
+		// 단, 부모창이 자식창에 가려진 상태에서 alert() 함수 결과가 바로 표시되지 않으므로
+		// 부모창을 클릭해서 활성화하면 alert() 창이 나타남
+		// => 주로, 자식창을 닫아서 부모창으로 제어를 바로 넘겨주는 형태로 사용
+		window.close();
+	}	
+	
+	function closeWindow() {
+		window.close(); // 현재 창 닫기
+	}
+</script>
+</head>
+<body>
+	<h1>test4_new_window.html</h1>
+	<input type="button" value="현재(자식)창 메세지 출력" onclick="showMessage()"><br>
+	<input type="button" value="부모창 메세지 출력" onclick="showMessage2()"><br>
+	<input type="button" value="창 닫기" onclick="closeWindow()"><br>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
