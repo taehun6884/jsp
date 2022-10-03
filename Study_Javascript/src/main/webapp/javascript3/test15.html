@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function check() {
+	document.getElementById("infoArea").innerHTML = document.fr.fruits.value;	
+	}
+	
+	function check2() {
+		let check = document.fr.fruits4.value;
+// 		if(check == ""){
+// 			alert("항목을 선택해주세요");
+// 			document.fr.fruits4.focus();
+// 			return;
+// 		}else{
+// 			document.querySelector("#infoArea").innerHTML = check;
+// 		}
+		
+		if(document.fr.fruits4.options[0].selected){ 
+			alert("항목을 선택해주세요");
+			document.fr.fruits4.focus();
+		}else if(document.fr.fruits4.options[1].selected) {
+			document.fr.fruits4.options[1].disabled = true;
+		}
+	}
+	
+	function itemSelected(value) {
+// 		document.querySelector("#infoArea").innerHTML = value;
+		document.fr.selectedFruit.value = value;
+	}
+	
+</script>
+</head>
+<body>
+	<h1>test15.html</h1>
+	
+	<form action="" name="fr">
+		<select name="fruits">
+			<option value="apple">사과</option>
+			<option value="strawberry">딸기</option>
+			<option value="Banana">바나나</option>	
+		</select>
+		<input type="button" value="확인" onclick="check()">
+		<hr>
+		<select name="fruits2">
+			<option value="apple">사과</option>
+			<option value="strawberry" disabled="disabled">딸기</option>
+			<option value="Banana" selected="selected">바나나</option>	
+		</select>
+		<hr>
+		<select name="fruits3" size="2">
+			<option value="apple">사과</option>
+			<option value="strawberry" disabled="disabled">딸기</option>
+			<option value="Banana" selected="selected">바나나</option>	
+		</select>
+		<hr>
+		<select name="fruits4">
+			<option value="">선택하세요</option>
+			<option value="apple">사과</option>
+			<option value="strawberry">딸기</option>
+			<option value="Banana">바나나</option>	
+		</select>
+		<input type="button" value="확인" onclick="check2()">
+		<hr>
+		<select name="fruits5" onchange="itemSelected(this.value)">
+			<option value="">선택하세요</option>
+			<option value="apple">사과</option>
+			<option value="strawberry">딸기</option>
+			<option value="Banana">바나나</option>	
+		</select>
+		<input type="text" name="selectedFruit" >
+		
+	</form>
+	<div id="infoArea"></div>
+
+
+</body>
+</html>
