@@ -8,5 +8,7 @@
 </head>
 <body>
 	<h3>include1<br>include() 메서드로 포함된 페이지</h3>
+	<h1>sdsd</h1>
+	<h2>sdsdsd</h2>
 </body>
 </html>
