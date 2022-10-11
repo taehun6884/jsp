@@ -16,7 +16,8 @@
 	
 	%>
 	<h1>세션 초기화 완료!</h1>
-	<h1>세션 초기화 완료!</h1>
+	
+	
 	<input type="button" value="세션값 확인" onclick="location.href='sessionTest2_get.jsp'">
 </body>
 </html>
