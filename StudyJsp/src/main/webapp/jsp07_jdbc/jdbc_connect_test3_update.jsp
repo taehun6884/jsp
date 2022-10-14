@@ -17,6 +17,7 @@
 	String url = "jdbc:mysql://localhost:3306/study_jsp5";
 	String user = "root";
 	String password = "1234";
+
 	
 	// 1단계. 드라이버 클래스 로드
 	Class.forName(driver);
@@ -39,6 +40,7 @@
 	
 	// 4단계. SQL 구문 실행 및 결과 처리
 	int count = pstmt.executeUpdate();
+	
 	%>
 	<h3>회원 정보 수정 성공! - <%=count %> 개 레코드</h3>
 </body>

@@ -80,6 +80,13 @@
 	
 	// 조회할 레코드가 복수개(2개 이상)일 경우
 	// if 문 대신 while 문을 사용하여 "다음 레코드가 존재할 동안" 반복
+	%>
+	
+	<table border="1">
+		<tr>
+			<th>번호</th> <th>이름</th>
+		</tr>
+	<%
 	while(rs.next()) {
 // 		out.println("다음 레코드 존재함!<br>");
 
@@ -93,10 +100,14 @@
 // 		int idx = rs.getInt("idx"); // 컬럼명 "idx" 데이터 가져와서 변수에 저장
 		String name = rs.getString(2);
 // 		String name = rs.getString("name");
-		out.println(idx + ", " + name + "<br>");
+		%>
+		<tr>
+			<td><%=idx %></td><td><%=name %></td>
+		</tr>
+		<%
 	}
 	%>
-	
+	</table>
 </body>
 </html>
 
