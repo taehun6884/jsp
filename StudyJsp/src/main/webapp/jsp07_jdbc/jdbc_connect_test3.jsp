@@ -42,7 +42,7 @@
 // 	String sql = "DROP TABLE student";
 	
 	// student 테이블의 레코드 추가(번호, 이름)
-	String sql = "INSERT INTO student VALUES (1, '홍길동')";
+	String sql = "INSERT INTO student VALUES (2, '이순신')";
 	
 	// 2) Connection 객체(변수 con)의 prepareStatement() 메서드를 호출하여 SQL 구문 전달
 	//    => 파라미터 : SQL 구문(String 타입 변수 sql)  리턴타입 : java.sql.PreparedStatement

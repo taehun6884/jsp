@@ -13,6 +13,7 @@
 	// 1단계. JDBC 드라이버 로드
 	// => Class 클래스의 static 메서드 forName() 메서드를 호출하여
 	//    파라미터로 드라이버 클래스(Driver.class)의 패키지명 및 클래스명을 문자열로 전달
+	// => 반드시 드라이버 클래스가 포함된 라이브러리(jar 파일)가 Build Path 에 추가되어 있어야함
 // 	Class.forName("com.mysql.cj.jdbc.Drive");
 	/*
 	드라이버 클래스가 존재하지 않거나, 이름이 틀린 경우 오류(HTTP 상태 500 – 내부 서버 오류) 발생

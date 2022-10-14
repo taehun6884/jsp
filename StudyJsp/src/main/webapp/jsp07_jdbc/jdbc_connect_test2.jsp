@@ -21,7 +21,7 @@
 	// 2단계. DB 연결
 	// => DriverManager 클래스의 static 메서드 getConnection() 메서드를 호출하여 DB 연결 수행
 	//    파라미터 : DB 접속에 필요한 URL, DB 계정명, DB 패스워드
-	DriverManager.getConnection("jdbc:mysql://localhost:3306/study_jsp5", "root", "123");
+	DriverManager.getConnection("jdbc:mysql://localhost:3306/study_jsp5", "root", "1234");
 	%>
 	<h1>DB 연결 성공!</h1>
 	<!-- 2단계까지는 DB 제품별로 정보가 달라지는 부분 -->
