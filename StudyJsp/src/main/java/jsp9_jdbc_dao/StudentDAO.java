@@ -3,7 +3,11 @@ package jsp9_jdbc_dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
+import org.apache.catalina.valves.StuckThreadDetectionValve;
 
 // DAO(Data Access Object, 데이터 접근 객체) 역할을 수행할 StudentDAO 클래스 정의
 // => 데이터베이스 접근, 자원 반환, 각 SQL 구문을 실행할 메서드 정의
@@ -66,12 +70,68 @@ public class StudentDAO {
 				e.printStackTrace();
 			}
 		}
-		
 		return insertCount;
+	}
+	
+	public ArrayList select() {
+		// JDBC 4단계
+		// 0단계. 데이터베이스 작업에 필요한 String 타입 변수 4개 선언
+		String driver = "com.mysql.cj.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/study_jsp5";
+		String user = "root";
+		String password = "1234";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList studentList=null;
+		
+		// 1단계. 드라이버 클래스 로드
+		try {
+			Class.forName(driver);
+			// 2단계. DB 연결
+			con = DriverManager.getConnection(url, user, password);
+			// 3단계. SQL 구문 작성 및 전달
+			// SELECT 구문을 사용하여 student 테이블의 모든 레코드 검색
+			String sql = "SELECT * FROM student";
+			pstmt = con.prepareStatement(sql);
+			// 4단계. SQL 구문 실행 및 결과 처리
+			rs = pstmt.executeQuery();
+			
+			studentList = new ArrayList();
+			
+			while(rs.next()) {
+				int idx = rs.getInt(1);
+				String name = rs.getString(2);
+//				System.out.println(idx);
+//				System.out.println(name);
+				
+				StudentDTO student = new StudentDTO();
+				student.setIdx(idx);
+				student.setName(name);
+				
+				studentList.add(student);
+				
+			}
+		} catch (ClassNotFoundException e) {
+			System.out.println("드라이버 로드 실패!");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("DB 연결 실패 또는 SQL 구문 오류 발생!");
+			e.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+				pstmt.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return studentList;
 	}
 }
 
-
+	
 
 
 
