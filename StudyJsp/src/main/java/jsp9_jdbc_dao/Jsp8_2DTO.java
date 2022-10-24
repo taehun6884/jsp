@@ -42,7 +42,7 @@ public class Jsp8_2DTO {
 	public String getJumin() {
 		return jumin;
 	}
-	public void setJumin(String jumin) {
+	public void setJumin (String jumin) {
 		this.jumin = jumin;
 	}
 	public String getEmail() {
