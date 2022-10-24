@@ -18,12 +18,7 @@
 	boolean result = dao.login(id, passwd);
 	
 	if(result == true){
-	%>
-	<script type="text/javascript">
-		alert("로그인성공!");
-		location.href = "index.jsp";
-	</script>
-	<%
+		response.sendRedirect("index.jsp");
 	}else{
 	%>
 	<script type="text/javascript">

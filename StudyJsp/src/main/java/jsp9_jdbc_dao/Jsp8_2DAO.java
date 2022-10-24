@@ -23,7 +23,7 @@ public class Jsp8_2DAO {
 		int count = 0;
 		
 		try {
-			con = JdbcUtil.getConncetion();
+			con = JdbcUtil.getConnection();
 			
 			// jsp8_2 테이블에 1개 레코드에 해당하는 모든 데이터 저장
 			// 단, 입사일(hire_date)는 SQL 구문의 now() 함수 사용하여 DB 서버의 현재 날짜, 시각정보를 사용
@@ -68,7 +68,7 @@ public class Jsp8_2DAO {
 				
 				// 1단계. JDBC 드라이버 로드
 				try {
-					con = JdbcUtil.getConncetion();
+					con = JdbcUtil.getConnection();
 					
 					String sql = "SELECT * FROM jsp8_2";
 					pstmt = con.prepareStatement(sql);
@@ -124,7 +124,7 @@ public class Jsp8_2DAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
-			 con = JdbcUtil.getConncetion();
+			 con = JdbcUtil.getConnection();
 			 String sql = "DELETE FROM jsp8_2 WHERE id=?";
 			 pstmt = con.prepareStatement(sql);
 			 pstmt.setString(1, id);
@@ -147,7 +147,7 @@ public class Jsp8_2DAO {
 		ResultSet rs = null;
 		// 1단계. JDBC 드라이버 로드
 		try {
-			con = JdbcUtil.getConncetion();
+			con = JdbcUtil.getConnection();
 			// 아이디가 일치하는 레코드 조회
 			String sql = "SELECT * FROM jsp8_2 WHERE id=?";
 			pstmt = con.prepareStatement(sql);
@@ -189,7 +189,7 @@ public class Jsp8_2DAO {
 		ResultSet rs = null;
 		boolean isLoginSuccess = false;
 		try {
-			con = JdbcUtil.getConncetion();
+			con = JdbcUtil.getConnection();
 			
 			String sql = "select * from jsp8_2 where id=? and passwd=?";
 			pstmt = con.prepareStatement(sql);
