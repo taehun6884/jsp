@@ -1,3 +1,4 @@
+<%@page import="member.MemberDAO"%>
 <%@page import="java.sql.Date"%>
 <%@page import="member.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -17,7 +18,16 @@
   dto.setAddress2(request.getParameter("address2"));
   
   out.print(dto.toString());
-  	
+  
+  MemberDAO dao = new MemberDAO();
+  int insertCount = dao.insert(dto);
+  
+  if(insertCount>0){
+	  response.sendRedirect("../main/main.jsp");
+  }else{
   %>
- 
- 
+ 	<script>
+ 		alert("회원가입 실패!");
+ 		history.back();
+ 	</script>
+<%} %> 

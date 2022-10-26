@@ -24,7 +24,7 @@
 	
 	if(result == true){
 		session.setAttribute("sId" , id);
-		response.sendRedirect("index.jsp");
+		response.sendRedirect("main.jsp");
 	}else{
 	%>
 	<script type="text/javascript">
