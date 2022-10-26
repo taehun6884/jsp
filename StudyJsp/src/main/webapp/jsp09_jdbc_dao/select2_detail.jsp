@@ -27,8 +27,17 @@
 	<%
 	// URL 파라미터로 전달받은 아이디 가져와서 변수에 저장
 	String id = request.getParameter("id");
-// 	out.println(id);
-
+	String sid= (String)session.getAttribute("sId");
+	
+	
+	if(!id.equals(sid) && !sid.equals("admin")){
+		%>
+		<script type="text/javascript">
+			alert("잘못된 접근입니다");
+			location.href="index.jsp";
+		</script>
+		<%
+	}
 	Jsp8_2DAO dao = new Jsp8_2DAO();
 	Jsp8_2DTO dto = dao.selectDetail(id);
 	
@@ -77,7 +86,7 @@
 			</tr>
 		</table>
 		<%
-	}
+		}
 		%>
 </body>
 </html>

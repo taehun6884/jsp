@@ -26,6 +26,20 @@
 </script>
 </head>
 <body>
+	<% 
+	request.setCharacterEncoding("UTF-8");
+		
+	String sid= (String)session.getAttribute("sId");
+		
+	if(sid == null || !sid.equals("admin")){
+		%>
+		<script>
+			alert("잘못된 접근!");
+			location.href="index.jsp";
+			</script>			
+		<%
+		}
+		%>
 	<h1>회원 목록</h1>
 	<table border="1">
 		<tr>
@@ -38,10 +52,6 @@
 		</tr>
 		<%
 		// POST 방식에 대한 한글 처리
-		request.setCharacterEncoding("UTF-8");
-		
-		String id = request.getParameter("id");
-		
 		
 		Jsp8_2DAO dao = new Jsp8_2DAO();
 		ArrayList selectLsit = dao.select();

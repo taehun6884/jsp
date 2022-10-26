@@ -1,3 +1,4 @@
+<%@page import="jsp9_jdbc_dao.Jsp8_2DTO"%>
 <%@page import="jsp9_jdbc_dao.Jsp8_2DAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -14,10 +15,15 @@
 	String passwd = request.getParameter("passwd");
 	
 	Jsp8_2DAO dao = new Jsp8_2DAO();
-	
+// 	Jsp8_2DTO dto = new Jsp8_2DTO();
+// 	dto.setId(id);
+// 	dto.setPasswd(passwd);
+
+
 	boolean result = dao.login(id, passwd);
 	
 	if(result == true){
+		session.setAttribute("sId" , id);
 		response.sendRedirect("index.jsp");
 	}else{
 	%>

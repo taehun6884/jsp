@@ -27,8 +27,29 @@
 </style>
 </head>
 <body>
+<%
+	String id = (String)session.getAttribute("sId");
+
+%>
 	<header>
+		
+		<%
+		if(id ==null || id.equals("")){
+		%>
 		<h4><a href="loginForm2.jsp">로그인</a> || <a href="insertForm2.jsp">회원가입</a></h4>
+		<%
+		}else {
+		%>
+		
+		<h4><a href="select2_detail.jsp?id=<%=id%>"><%=id %>님</a> ||
+			 <a href="logout.jsp">로그아웃</a>
+			<%if(id.equals("admin")){ %>
+				|| <a href="select2.jsp">관리자페이지</a>
+			 <%} %>
+			 </h4>
+		<%
+		}
+		%>
 	</header>
 	<article>
 	<h1>index.jsp</h1>

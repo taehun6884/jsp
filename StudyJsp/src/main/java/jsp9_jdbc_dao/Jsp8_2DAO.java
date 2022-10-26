@@ -188,21 +188,18 @@ public class Jsp8_2DAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		boolean isLoginSuccess = false;
-		try {
+		
 			con = JdbcUtil.getConnection();
-			
+		try {
 			String sql = "select * from jsp8_2 where id=? and passwd=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, passwd);
 			rs = pstmt.executeQuery();
-			
 			if(rs.next()) {
 				isLoginSuccess = true;
-				
 				//return isLoginSuccess;
 			}
-				
 		} catch (SQLException e) {
 			System.out.println("sql문장오류!");
 			e.printStackTrace();
