@@ -20,7 +20,7 @@
   out.print(dto.toString());
   
   MemberDAO dao = new MemberDAO();
-  int insertCount = dao.insert(dto);
+  int insertCount = dao.insertMember(dto);
   
   if(insertCount>0){
 	  response.sendRedirect("../main/main.jsp");

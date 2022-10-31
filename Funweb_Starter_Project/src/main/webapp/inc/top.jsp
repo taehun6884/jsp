@@ -9,11 +9,13 @@
   %>
   <div id="login"><a href="../member/login.jsp">login</a> | <a href="../member/join.jsp">join</a></div>
   <%}else{ %>
-  <div id="login"><a href="#"><%=sid %></a> | <a href="#">로그아웃</a></div>
+  <div id="login"><a href="../member/member_info.jsp?id=<%=sid %>"><%=sid %></a> | <a href="../member/logout.jsp">로그아웃</a>
+  <%if(sid.equals("admin")){ %>
+  |<a href="../admin/admin_main.jsp">관리자 페이지</a></div>
   <%
+  	}
   }
   %>
- 
  
   <div class="clear"></div>
   <!-- 로고들어가는 곳 -->
