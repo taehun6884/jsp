@@ -18,20 +18,12 @@
 		<!-- 본문 메인 이미지 -->
 		<div id="sub_img_center"></div>
 		<!-- 왼쪽 메뉴 -->
-		<nav id="sub_menu">
-			<ul>
-				<li><a href="#">Notice</a></li>
-				<li><a href="#">Public News</a></li>
-				<li><a href="#">Driver Download</a></li>
-				<li><a href="#">Service Policy</a></li>
-			</ul>
-		</nav>
+		<jsp:include page="../inc/left.jsp" />
 		<!-- 본문 내용 -->
 		<article>
 			<h1>Notice Write</h1>
 			<form action="notice_writePro.jsp" method="post">
 				<table id="notice">
-
 					<tr>
 						<td>글쓴이</td>
 						<td><input type="text" name="name"></td>
@@ -48,7 +40,6 @@
 						<td>내용</td>
 						<td><textarea rows="10" cols="20" name="content"></textarea></td>
 					</tr>
-
 				</table>
 
 				<div id="table_search">
