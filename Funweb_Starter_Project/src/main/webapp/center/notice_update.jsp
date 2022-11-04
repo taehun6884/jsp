@@ -1,5 +1,16 @@
+<%@page import="board.BoardDTO"%>
+<%@page import="board.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+	int idx = Integer.parseInt(request.getParameter("idx"));
+	String pageNum = request.getParameter("pageNum");
+	
+	BoardDAO dao = new BoardDAO();
+	BoardDTO dto = dao.selectBoard(idx);
+	dto.getContent().replaceAll(System.getProperty("line.separator"), "<br>");
+%>	
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,18 +34,24 @@
 		<article>
 			<h1>Notice Update</h1>
 			<form action="notice_updatePro.jsp" method="post">
+				<input type="hidden" name="idx" value="<%=idx%>">
+				<input type="hidden" name="pageNum" value="<%=pageNum%>">
 				<table id="notice">
 					<tr>
 						<td>글쓴이</td>
-						<td><input type="text" name="name"></td>
+						<td><input type="text" name="name" value="<%=dto.getName()%>"></td>
+					</tr>
+					<tr>
+						<td>비밀번호</td>
+						<td><input type="password" name="pass" value="<%=dto.getPass()%>"></td>
 					</tr>
 					<tr>
 						<td>제목</td>
-						<td><input type="text" name="subject"></td>
+						<td><input type="text" name="subject" value="<%=dto.getSubject()%>"></td>
 					</tr>
 					<tr>
 						<td>내용</td>
-						<td><textarea rows="10" cols="20" name="content">></textarea></td>
+						<td><textarea rows="10" cols="20" name="content"><%=dto.getContent()%></textarea></td>
 					</tr>
 				</table>
 

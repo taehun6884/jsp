@@ -189,6 +189,73 @@ public class BoardDAO {
 		return boardList;
 	}
 	
+	public BoardDTO selectBoard(int idx) {
+		BoardDTO dto = null;
+		con = JdbcUtil.getConnection();
+		String sql = "SELECT * FROM board WHERE idx = ?";
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				dto = new BoardDTO();
+				dto.setIdx(rs.getInt("idx"));
+				dto.setName(rs.getString("name"));
+				dto.setPass(rs.getString("pass"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setContent(rs.getString("content"));
+				dto.setDate(rs.getTimestamp("date"));
+				dto.setReadcount(rs.getInt("readcount"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+			JdbcUtil.close(con);
+		}
+		return dto;
+	}
+	
+	public void updateReadcount(int idx) {
+		con = JdbcUtil.getConnection();
+		String sql = "UPDATE board SET readcount=readcount+1 WHERE idx=?";
+		
+		try {
+			pstmt =con.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		
+		}
+		
+	}
+	
+	public int updateBoard(BoardDTO dto) {
+		int updateCount = 0;
+		
+		con = JdbcUtil.getConnection();
+		
+		String sql = "UPDATE board SET name=?,subject=?,content=? WHERE idx=? AND pass=?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1,dto.getName());
+			pstmt.setString(2,dto.getSubject());
+			pstmt.setString(3,dto.getContent());
+			pstmt.setInt(4, dto.getIdx());
+			pstmt.setString(5,dto.getPass());
+			updateCount = pstmt.executeUpdate();
+			
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return updateCount;
+	}
 }
 
 

@@ -84,7 +84,7 @@ List<BoardDTO> boardList = dao.selectBoardList(startRow, listLimit);
 				// 향상된 for문 활용
 				for(BoardDTO board : boardList) {
 				%>
-					<tr onclick="#">
+					<tr onclick="location.href ='notice_content.jsp?idx=<%=board.getIdx() %>&pageNum=<%=pageNum%>'">
 						<td><%=board.getIdx() %></td>
 						<td class="left"><%=board.getSubject() %></td>
 						<td><%=board.getName() %></td>
@@ -141,7 +141,17 @@ List<BoardDTO> boardList = dao.selectBoardList(startRow, listLimit);
 			}
 			%>
 			<div id="page_control">
-				<a href="#">Prev</a>
+				<%if(pageNum > 1){ %>
+				<a href="notice.jsp?pageNum=<%=pageNum - 1%>">Prev</a>
+				<%
+				}else{ 
+				%>
+				<a href="javascript:void(0)">Prev</a>
+				<%
+				}
+				%>
+				
+				
 				
 				<%for(int i=startPage;i<=endPage;i++){ %>
 					<%if(pageNum == i ){ 
@@ -154,15 +164,17 @@ List<BoardDTO> boardList = dao.selectBoardList(startRow, listLimit);
 					<%
 					}
 					%>				
-				
-				
-				
 				<%
 				}
 				%>
 				
-				<a href="#">Next</a>
-
+				<%if(maxPage > pageNum ){ %>
+				<a href="notice.jsp?pageNum=<%=pageNum + 1%>">Next</a>
+				<%}else{ %>
+				<a href="javascript:void(0)">Next</a>
+				<%
+				}
+				%>
 			</div>
 		</article>
 

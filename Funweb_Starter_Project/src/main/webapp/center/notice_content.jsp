@@ -1,5 +1,22 @@
+<%@page import="board.BoardDAO"%>
+<%@page import="board.BoardDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+	
+	int idx = Integer.parseInt(request.getParameter("idx"));
+	String pageNum = request.getParameter("pageNum");
+	 
+	BoardDAO dao = new BoardDAO();
+	
+	dao.updateReadcount(idx);
+	
+	BoardDTO dto = dao.selectBoard(idx);
+	
+	dto.getContent().replaceAll(System.getProperty("line.separator"), "<br>");
+%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,32 +43,31 @@
 			<table id="notice">
 				<tr>
 					<td>글번호</td>
-					<td></td>
+					<td><%=dto.getIdx() %></td>
 					<td>글쓴이</td>
-					<td></td>
+					<td><%=dto.getName() %></td>
 				</tr>
 				<tr>
 					<td>작성일</td>
-					<td></td>
+					<td><%=dto.getDate() %></td>
 					<td>조회수</td>
-					<td></td>
+					<td><%=dto.getReadcount() %></td>
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td colspan="3"></td>
+					<td colspan="3"><%=dto.getSubject() %></td>
 				</tr>
 				<tr>
-					<td>내용</td>
-					<td colspan="3"></td>
+					<td height="300">내용</td>
+					<td colspan="3"><%=dto.getContent() %></td>
 				</tr>
 			</table>
-
+			
 			<div id="table_search">
-				<input type="button" value="글수정" class="btn" onclick="#"> <input
-					type="button" value="글삭제" class="btn" onclick="#"> <input
-					type="button" value="글목록" class="btn" onclick="#">
+				<input type="button" value="글수정" class="btn" onclick="location.href='notice_update.jsp?idx=<%=dto.getIdx()%>&pageNum=<%=pageNum%>'"> 
+				<input type="button" value="글삭제" class="btn" onclick="location.href='notice_delete.jsp?idx=<%=dto.getIdx()%>&pageNum=<%=pageNum%>'"> 
+				<input type="button" value="글목록" class="btn" onclick="location.href='notice.jsp?pageNum=<%=pageNum %>'">
 			</div>
-
 			<div class="clear"></div>
 		</article>
 
