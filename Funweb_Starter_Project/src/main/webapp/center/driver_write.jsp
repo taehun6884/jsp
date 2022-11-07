@@ -1,16 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-//파라미터 idx, pageNum 받아오기
-int idx = Integer.parseInt(request.getParameter("idx"));
-String pageNum = request.getParameter("pageNum");
-
+	String sid = (String)session.getAttribute("sId");
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>center/notice_delete.jsp</title>
+<title>center/driver_write.jsp</title>
 <link href="../css/default.css" rel="stylesheet" type="text/css">
 <link href="../css/subpage.css" rel="stylesheet" type="text/css">
 </head>
@@ -27,19 +25,33 @@ String pageNum = request.getParameter("pageNum");
 		<jsp:include page="../inc/left.jsp" />
 		<!-- 본문 내용 -->
 		<article>
-			<h1>Notice Delete</h1>
-			<form action="notice_deletePro.jsp" method="post">
-				<input type="hidden" name="idx" value="<%=idx%>">
-				<input type="hidden" name="pageNum" value="<%=pageNum%>">
+			<h1>driver Write</h1>
+			<form action="driver_writePro.jsp" method="post" enctype="multipart/form-data">
 				<table id="notice">
 					<tr>
-						<td>패스워드</td>
-						<td><input type="password" name="pass" ></td>
+						<td>글쓴이</td>
+						<td><input type="text" name="name" value="<%=sid %>" readonly="readonly"></td>
+					</tr> 
+					<tr>
+						<td>비밀번호</td>
+						<td><input type="password" name="pass"></td>
+					</tr>
+					<tr>
+						<td>제목</td>
+						<td><input type="text" name="subject"></td>
+					</tr>
+					<tr>
+						<td>내용</td>
+						<td><textarea rows="10" cols="20" name="content"></textarea></td>
+					</tr>
+					<tr>
+						<td>파일</td>
+						<td><input type="file" name="original_file" required="required"></td>
 					</tr>
 				</table>
 
 				<div id="table_search">
-					<input type="submit" value="글삭제" class="btn">
+					<input type="submit" value="글쓰기" class="btn">
 				</div>
 			</form>
 			<div class="clear"></div>

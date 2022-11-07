@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="board.BoardDAO"%>
 <%@page import="board.BoardDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -6,7 +7,7 @@
 	
 	int idx = Integer.parseInt(request.getParameter("idx"));
 	String pageNum = request.getParameter("pageNum");
-	 
+	
 	BoardDAO dao = new BoardDAO();
 	
 	dao.updateReadcount(idx);
@@ -14,6 +15,8 @@
 	BoardDTO dto = dao.selectBoard(idx);
 	
 	dto.getContent().replaceAll(System.getProperty("line.separator"), "<br>");
+
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 %>
 
 
@@ -49,7 +52,7 @@
 				</tr>
 				<tr>
 					<td>작성일</td>
-					<td><%=dto.getDate() %></td>
+					<td><%=sdf.format(dto.getDate())%></td>
 					<td>조회수</td>
 					<td><%=dto.getReadcount() %></td>
 				</tr>

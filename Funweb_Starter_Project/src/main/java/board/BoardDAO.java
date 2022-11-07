@@ -87,7 +87,6 @@ public class BoardDAO {
 			JdbcUtil.close(pstmt);
 			JdbcUtil.close(con);
 		}
-		
 		return listCount;
 	}
 	
@@ -256,6 +255,115 @@ public class BoardDAO {
 		
 		return updateCount;
 	}
+		
+		// 글 삭제 작업 수행 - deleteBoard()
+		// => 파라미터 : 글번호, 패스워드   리턴타입 : int(deleteCount)
+		// => SQL : board 테이블에서 글번호와 패스워드가 일치하는 레코드 삭제(DELETE)
+		public int deleteBoard(int idx, String pass) {
+//			System.out.println("BoardDAO - deleteBoard()");
+			int deleteCount = 0;
+			
+			con = JdbcUtil.getConnection();
+			
+			try {
+				String sql = "DELETE FROM board WHERE idx=? AND pass=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, idx);
+				pstmt.setString(2, pass);
+				
+				deleteCount = pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("SQL 구문 오류! - deleteBoard()");
+				e.printStackTrace();
+			} finally {
+				// DB 자원 반환
+				JdbcUtil.close(pstmt);
+				JdbcUtil.close(con);
+			}
+			
+			return deleteCount;
+		}
+		
+		public List<BoardDTO> selectBoardList(int startRow, int listLimit,String keyword) {
+			List<BoardDTO> boardList = null;
+			
+			con = JdbcUtil.getConnection();
+			
+			try {
+				// board 테이블의 모든 레코드 조회
+				// => idx 컬럼 기준 내림차순 정렬(ORDER BY 컬럼명 정렬방식)
+				// => 시작행번호부터 게시물 목록 수 만큼으로 갯수 제한(LIMIT 시작행번호,목록수)
+				//    (단, 시작행번호 첫번째는 0부터 시작)
+				//    (또한, LIMIT 에 파라미터 하나만 사용 시 목록 갯수로 사용됨)
+				String sql = "SELECT * FROM board Where subject LIKE ? ORDER BY idx DESC LIMIT ?,?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%" + keyword + "%");
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, listLimit);
+				rs = pstmt.executeQuery();
+				
+				// 전체 레코드를 저장할 ArrayList 객체 생성
+				boardList = new ArrayList<BoardDTO>();
+				
+				while(rs.next()) {
+					// 1개 레코드를 저장할 BoardDTO 객체 생성
+					BoardDTO board = new BoardDTO();
+					board.setIdx(rs.getInt("idx"));
+					board.setName(rs.getString("name"));
+					board.setPass(rs.getString("pass"));
+					board.setSubject(rs.getString("subject"));
+					board.setContent(rs.getString("content"));
+					board.setDate(rs.getTimestamp("date"));
+					board.setReadcount(rs.getInt("readcount"));
+//					System.out.println(board);
+					
+					// 전체 레코드 저장하는 List 객체에 1개 레코드 저장된 BoardDTO 객체 추가
+					boardList.add(board);
+				}
+//				System.out.println(boardList);
+			} catch (SQLException e) {
+				System.out.println("SQL 구문 오류! - selectBoardList()");
+				e.printStackTrace();
+			} finally {
+				// 자원 반환
+				JdbcUtil.close(rs);
+				JdbcUtil.close(pstmt);
+				JdbcUtil.close(con);
+			}
+			
+			return boardList;
+		}
+		
+		public int selectListCount(String keyword) {
+			int listCount = 0;
+			
+			con = JdbcUtil.getConnection();
+			
+			try {
+				// 특정 컬럼 또는 전체 컬럼(*)에 해당하는 레코드 수 조회하기 위해
+				// MySQL 의 COUNT() 함수 활용(SELECT COUNT(컬럼명 또는 *) FROM 테이블명)
+				String sql = "SELECT COUNT(idx) FROM board WHERE subject LIKE ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%" + keyword + "%");
+				rs = pstmt.executeQuery();
+
+				if(rs.next()) {
+					listCount = rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				System.out.println("SQL 구문 오류! - selectListCount()");
+				e.printStackTrace();
+			} finally {
+				// 자원 반환
+				JdbcUtil.close(rs);
+				JdbcUtil.close(pstmt);
+				JdbcUtil.close(con);
+			}
+			
+			return listCount;
+		}
+		
+		
 }
 
 

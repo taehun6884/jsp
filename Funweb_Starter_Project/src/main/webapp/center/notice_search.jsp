@@ -24,25 +24,16 @@ int pageNum = 1;
 if(request.getParameter("pageNum") != null) {
 	pageNum = Integer.parseInt(request.getParameter("pageNum"));
 }
-// System.out.println(pageNum);
 
-/*
-3. 현재 페이지에서 목록으로 표시할 첫 게시물의 행(레코드) 번호 계산
-   => (현재 페이지번호 - 1) * 페이지 당 게시물 목록 갯수
-------------------------------------------------------------------------------------
-pageNum(페이지번호)  listLimit(게시물 수)    startRow(시작행번호)   endRow(끝행번호)
-------------------------------------------------------------------------------------
-        1                    10              (1 - 1) * 10 =  0행        (~ 9행)
-        2                    10              (2 - 1) * 10 = 10행       (~ 19행)
-        3                    10              (3 - 1) * 10 = 20행       (~ 29행)
-*/
 int startRow = (pageNum - 1) * listLimit;
-// 끝 행번호는 계산 불필요(시작행번호부터 시작하여 페이지 당 게시물 수 만큼 조회)
 
-// BoardDAO 객체의 selectBoardList() 메서드를 호출하여 게시물 목록 조회
-// => 파라미터 : 시작행번호, 페이지 당 게시물 목록 수 
-// => 리턴타입 : List<BoardDTO>(boardList)
-List<BoardDTO> boardList = dao.selectBoardList(startRow, listLimit);
+String keyword = request.getParameter("keyword");
+
+if(keyword == null){
+	keyword = "";
+}
+
+List<BoardDTO> boardList = dao.selectBoardList(startRow, listLimit, keyword);
 %>	
 <!DOCTYPE html>
 <html>
@@ -109,17 +100,20 @@ List<BoardDTO> boardList = dao.selectBoardList(startRow, listLimit);
 			</div>
 			<div id="table_search">
 				<form action="notice_search.jsp" method="get">
-					<input type="text" name="keyword" class="input_box">
+					<input type="text" name="keyword" value="<%=keyword %>" class="input_box">
 					<input type="submit" value="Search" class="btn">
 				</form>
 			</div>
 
 			<div class="clear"></div>
+			<div id="page_control">
 			<%
 			// 0. BoardDAO 객체의 selectListCount() 메서드를 호출하여 전체 게시물 수 조회(페이지 목록 계산에 사용)
 			// => 파라미터 : 없음, 리턴타입 : int(listCount)
-			int listCount = dao.selectListCount();
+			int listCount = dao.selectListCount(keyword);
+			
 			System.out.println("총 게시물 수 : " + listCount);
+			
 			int pageListLimit = 10; // 한 페이지에서 표시할 페이지 목록을 3개로 제한
 			
 // 			int maxPage = listCount / listLimit;
@@ -140,7 +134,7 @@ List<BoardDTO> boardList = dao.selectBoardList(startRow, listLimit);
 				endPage = maxPage;
 			}
 			%>
-			<div id="page_control">
+			
 				<%if(pageNum > 1){ %>
 				<a href="notice.jsp?pageNum=<%=pageNum - 1%>">Prev</a>
 				<%
