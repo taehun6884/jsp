@@ -45,7 +45,7 @@ out.println("원본 파일명 :"+ dto.getOriginal_file() +", : 실제 파일명 
  out.print(dto);
 
  FileBoardDAO dao = new FileBoardDAO();
-	
+int insertCount  = 	dao.insertFileBoard(dto);
  
 %> 
 
@@ -59,6 +59,7 @@ out.println("원본 파일명 :"+ dto.getOriginal_file() +", : 실제 파일명 
 			alert("글쓰기 실패!");
 			history.back();
 		</script>
+		
 		<%
 	}
 

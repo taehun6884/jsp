@@ -38,14 +38,13 @@ public class BoardDAO {
 			System.out.println("새 글 번호 : " + idx);
 			// --------------------------------------------------------------------------------
 			// 게시물 등록(INSERT) 작업 수행
-			sql = "INSERT INTO board VALUES (?,?,?,?,?,now(),0)";
+			sql = "INSERT INTO board VALUES (?,?,?,?,now(),0,?)";
 			pstmt2 = con.prepareStatement(sql);
 			pstmt2.setInt(1, idx); // 위에서 생성한 새 글 번호 활용
 			pstmt2.setString(2, board.getName());
-			pstmt2.setString(3, board.getPass());
-			pstmt2.setString(4, board.getSubject());
-			pstmt2.setString(5, board.getContent());
-			
+			pstmt2.setString(3, board.getSubject());
+			pstmt2.setString(4, board.getContent());
+			pstmt2.setString(5, board.getPass());
 			insertCount = pstmt2.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL 구문 오류! - insertBoard()");
