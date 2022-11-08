@@ -156,7 +156,7 @@ article table#notice td{
 	border-bottom-color: #999;
 }
 article table#notice td.left{
-	text-align: left;
+	text-align: center;
 }
 article th.tno{
 	width: 50px;

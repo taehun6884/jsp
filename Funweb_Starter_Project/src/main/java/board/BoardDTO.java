@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 create table board ( 
 		 idx int primary key,
 		 name varchar(20) not null,
+		 pass varchar(20) not null,
 		 subject varchar(50) not null,
 		 content varchar(2000) not null,
 		 date timestamp not null,

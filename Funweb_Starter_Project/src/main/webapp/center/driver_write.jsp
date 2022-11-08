@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	String sid = (String)session.getAttribute("sId");
-%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,25 +21,33 @@
 		<jsp:include page="../inc/left.jsp" />
 		<!-- 본문 내용 -->
 		<article>
-			<h1>driver Write</h1>
+			<h1>Driver Write</h1>
+			<!-- 
+			파일 업로드 기능을 위해서는 form 태그에 enctype="multipart/form-data" 속성 추가 필수!
+			=> 속성 미지정 시 모든 데이터는 문자열로 전송되므로 파일도 파일명만 전송됨
+			=> 주의1) 반드시 cos.jar 라이브러리 등록 필수!
+			=> 주의2) 파라미터 가져오는 request.getParameter() 메서드 사용 불가!
+			          (MultipartRequest 객체의 getParameter() 메서드로 대체)
+			-->
 			<form action="driver_writePro.jsp" method="post" enctype="multipart/form-data">
 				<table id="notice">
 					<tr>
 						<td>글쓴이</td>
-						<td><input type="text" name="name" value="<%=sid %>" readonly="readonly"></td>
-					</tr> 
+						<td><input type="text" name="name" required="required"></td>
+					</tr>
 					<tr>
 						<td>비밀번호</td>
-						<td><input type="password" name="pass"></td>
+						<td><input type="password" name="pass" required="required"></td>
 					</tr>
 					<tr>
 						<td>제목</td>
-						<td><input type="text" name="subject"></td>
+						<td><input type="text" name="subject" required="required"></td>
 					</tr>
 					<tr>
 						<td>내용</td>
-						<td><textarea rows="10" cols="20" name="content"></textarea></td>
+						<td><textarea rows="10" cols="20" name="content" required="required"></textarea></td>
 					</tr>
+					<!-- 파일 업로드를 위한 입력폼 추가 -->
 					<tr>
 						<td>파일</td>
 						<td><input type="file" name="original_file" required="required"></td>
