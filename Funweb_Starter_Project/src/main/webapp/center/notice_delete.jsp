@@ -13,6 +13,21 @@ String pageNum = request.getParameter("pageNum");
 <title>center/notice_delete.jsp</title>
 <link href="../css/default.css" rel="stylesheet" type="text/css">
 <link href="../css/subpage.css" rel="stylesheet" type="text/css">
+<%
+	// 세션 아이디 가져와서 sId 변수에 저장
+	String sId = (String)session.getAttribute("sId");
+	if(sId != null || !sId.equals("admin")) {
+// 		System.out.println("세션 아이디 없음!");
+		// 세션 아이디가 없을 경우 "잘못된 접근입니다!" 출력 후 이전페이지로 돌아가기
+		%>
+		<script type="text/javascript">
+		alert("잘못된 접근입니다!");
+		history.back();
+		</script>
+		<%
+	}
+	    %>	
+
 </head>
 <body>
 	<div id="wrap">
@@ -40,6 +55,7 @@ String pageNum = request.getParameter("pageNum");
 
 				<div id="table_search">
 					<input type="submit" value="글삭제" class="btn">
+					<input type="button" value="취소" class="btn" onclick="hitory.back()">
 				</div>
 			</form>
 			<div class="clear"></div>

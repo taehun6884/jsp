@@ -4,6 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
+String sid = (String)session.getAttribute("sId");
 // 글번호, 페이지번호 파라미터 가져오기
 // => 단, 페이지번호는 다음 페이지로 전달하는 용도로만 사용하므로 String 타입 사용도 가능
 int idx = Integer.parseInt(request.getParameter("idx"));
@@ -91,14 +92,16 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // ex) 2022-
 			</table>
 
 			<div id="table_search">
+			<%if(sid !=null){ %>	
 				<input type="button" value="글수정" class="btn" 
 						onclick="location.href='driver_update.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'"> 
 				<input type="button" value="글삭제" class="btn" 
 						onclick="location.href='driver_delete.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'"> 
+			<%} %>	
 				<input type="button" value="글목록" class="btn" 
 						onclick="location.href='driver.jsp?pageNum=<%=pageNum%>'">
 			</div>
-
+	
 			<div class="clear"></div>
 		</article>
 

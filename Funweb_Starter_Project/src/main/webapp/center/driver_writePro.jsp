@@ -1,3 +1,4 @@
+<%@page import="java.io.File"%>
 <%@page import="board.FileBoardDAO"%>
 <%@page import="board.FileBoardDTO"%>
 <%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
@@ -81,6 +82,12 @@ int insertCount = dao.insertFileBoard(fileBoard);
 if(insertCount > 0) {
 	response.sendRedirect("driver.jsp");
 } else {
+	// 업로드 한 파일 삭제
+	File f = new File(realPath, fileBoard.getReal_file());
+	
+	if(f.exists()) {
+		f.delete(); 
+	}
 	%>
 	<script>
 		alert("글쓰기 실패!");

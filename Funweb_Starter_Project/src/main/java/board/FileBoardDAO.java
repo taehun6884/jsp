@@ -222,6 +222,36 @@ public class FileBoardDAO {
 		return fileBoard; // driver_content.jsp 로 리턴
 	}
 	
+	// 실제 업로드 된 파일명 조회 - selectRealFile()
+	// => 파라미터 : 글번호(idx), 리턴타입 : String
+	public String selectRealFile(int idx) {
+		String realFile = "";
+		
+		con = JdbcUtil.getConnection();
+		
+		try {
+			String sql = "SELECT real_file FROM file_board WHERE idx=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				realFile = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 구문 오류! - selectRealFile()");
+			e.printStackTrace();
+		} finally {
+			// 자원 반환
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+			JdbcUtil.close(con);
+		}
+		
+		return realFile;
+	}
+	
 	// 글 삭제 작업 수행 - deleteFileBoard()
 	// => 파라미터 : 글번호, 패스워드   리턴타입 : int(deleteCount)
 	public int deleteFileBoard(int idx, String pass) {
@@ -250,6 +280,38 @@ public class FileBoardDAO {
 		return deleteCount;
 	}
 	
+	// 글수정 작업 수행 - updateFileBoard()
+	// => 파라미터 : FileBoardDTO 객체    리턴타입 : int(updateCount)
+	public int updateFileBoard(FileBoardDTO fileBoard) {
+		int updateCount = 0;
+		
+		con = JdbcUtil.getConnection();
+		
+		try {
+			// file_board 테이블에서 글번호와 패스워드가 일치하는 레코드 수정(UPDATE)
+			String sql = "UPDATE file_board "
+						+ "SET subject=?, content=?, original_file=?, real_file=? "
+						+ "WHERE idx=? AND pass=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, fileBoard.getSubject());
+			pstmt.setString(2, fileBoard.getContent());
+			pstmt.setString(3, fileBoard.getOriginal_file());
+			pstmt.setString(4, fileBoard.getReal_file());
+			pstmt.setInt(5, fileBoard.getIdx());
+			pstmt.setString(6, fileBoard.getPass());
+			
+			updateCount = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 구문 오류! - updateFileBoard()");
+			e.printStackTrace();
+		} finally {
+			// 자원 반환
+			JdbcUtil.close(pstmt);
+			JdbcUtil.close(con);
+		}
+		
+		return updateCount;
+	}
 	
 }
 

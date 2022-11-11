@@ -5,6 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
+String sid = (String)session.getAttribute("sId");
 // file_board 테이블의 게시물 목록 조회
 FileBoardDAO dao = new FileBoardDAO();
 
@@ -78,8 +79,10 @@ SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm");
 				<%} %>
 			</table>
 			<div id="table_search">
+			<%if(sid !=null){ %>				
 				<input type="button" value="글쓰기" class="btn" onclick="location.href='driver_write.jsp'">
 			</div>
+			<%} %>
 			<!-- 검색 기능(driver.jsp 페이지 하나로 일반 목록과 검색 목록 통합) -->
 			<div id="table_search">
 				<form action="driver.jsp" method="get">

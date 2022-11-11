@@ -56,6 +56,7 @@
 
 				<div id="table_search">
 					<input type="submit" value="글쓰기" class="btn">
+					<input type="button" value="취소" class="btn" onclick="history.back()">
 				</div>
 			</form>
 			<div class="clear"></div>
