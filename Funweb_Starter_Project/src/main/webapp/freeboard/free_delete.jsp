@@ -1,22 +1,16 @@
-<%@page import="board.BoardDTO"%>
-<%@page import="board.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-// 번호, 페이지번호 파라미터 가져오기
+//파라미터 idx, pageNum 받아오기
 int idx = Integer.parseInt(request.getParameter("idx"));
 String pageNum = request.getParameter("pageNum");
 
-// BoardDAO 객체의 selectBoard() 메서드 호출하여 게시물 1개 정보 조회 - 메서드 재사용
-// => 파라미터 : 글번호(idx)    리턴타입 : BoardDTO(board)
-BoardDAO dao = new BoardDAO();
-BoardDTO board = dao.selectBoard(idx);
-%>	
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>center/notice_update.jsp</title>
+<title>center/notice_delete.jsp</title>
 <link href="../css/default.css" rel="stylesheet" type="text/css">
 <link href="../css/subpage.css" rel="stylesheet" type="text/css">
 <%
@@ -32,7 +26,8 @@ BoardDTO board = dao.selectBoard(idx);
 		</script>
 		<%
 	}
-	%>	
+	    %>	
+
 </head>
 <body>
 	<div id="wrap">
@@ -47,33 +42,20 @@ BoardDTO board = dao.selectBoard(idx);
 		<jsp:include page="../inc/left.jsp" />
 		<!-- 본문 내용 -->
 		<article>
-			<h1>Notice Update</h1>
-			<form action="notice_updatePro.jsp" method="post">
-				<!-- 입력받지 않은 데이터(글번호, 페이지번호)도 폼 태그에 함께 포함시키기 -->
-				<input type="hidden" name="idx" value="<%=idx %>">
-				<input type="hidden" name="pageNum" value="<%=pageNum %>">
+			<h1>Notice Delete</h1>
+			<form action="free_deletePro.jsp" method="post">
+				<input type="hidden" name="idx" value="<%=idx%>">
+				<input type="hidden" name="pageNum" value="<%=pageNum%>">
 				<table id="notice">
 					<tr>
-						<td>글쓴이</td>
-						<td><input type="text" name="name" value="<%=board.getName() %>"></td>
-					</tr>
-					<tr>
 						<td>패스워드</td>
-						<td><input type="password" name="pass"></td>
-					</tr>
-					<tr>
-						<td>제목</td>
-						<td><input type="text" name="subject" value="<%=board.getSubject()%>"></td>
-					</tr>
-					<tr>
-						<td>내용</td>
-						<td><textarea rows="10" cols="20" name="content"><%=board.getContent() %></textarea></td>
+						<td><input type="password" name="pass" ></td>
 					</tr>
 				</table>
 
 				<div id="table_search">
-					<input type="submit" value="글수정" class="btn">
-					<input type="button" value="취소" class="btn" onclick="history.back()">
+					<input type="submit" value="글삭제" class="btn">
+					<input type="button" value="취소" class="btn" onclick="hitory.back()">
 				</div>
 			</form>
 			<div class="clear"></div>

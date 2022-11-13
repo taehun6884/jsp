@@ -59,261 +59,273 @@ public class FileBoardDAO {
 		
 		return insertCount;
 	}
-
-	// 전체 게시물 수 조회 selectFileBoardListCount() => 검색어 기능 추가
-	// => 파라미터 : 검색어(keyword), 리턴타입 : int(listCount)
-	public int selectFileBoardListCount(String keyword) {
-		int listCount = 0;
-		
-		con = JdbcUtil.getConnection();
-		
-		try {
-			// 특정 컬럼 또는 전체 컬럼(*)에 해당하는 레코드 수 조회하기 위해
-			// MySQL 의 COUNT() 함수 활용(SELECT COUNT(컬럼명 또는 *) FROM 테이블명)
-			// => 제목 검색 기능 추가와 일반 목록 기능을 결합하여
-			//    제목이 널스트링("")일 경우 전체 목록 조회 가능
-			String sql = "SELECT COUNT(idx) FROM file_board "
-							+ "WHERE subject LIKE ?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, "%" + keyword + "%");
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				listCount = rs.getInt(1);
-			}
-		} catch (SQLException e) {
-			System.out.println("SQL 구문 오류! - selectFileBoardListCount()");
-			e.printStackTrace();
-		} finally {
-			// 자원 반환
-			JdbcUtil.close(rs);
-			JdbcUtil.close(pstmt);
-			JdbcUtil.close(con);
-		}
-		
-		return listCount;
-	}
 	
-
-	// 게시물 목록 조회 selectFileBoardList() - 검색 기능 추가
-	// => 파라미터 : 시작행번호, 페이지 당 게시물 목록 수, 검색어(keyword)
+	// 게시물 목록 조회 selectFileBoardList() - 게시물 목록 갯수 제한 추가
+	// => 파라미터 : 시작행번호, 페이지 당 게시물 목록 수
 	//    리턴타입 : List<FileBoardDTO>(boardList)
-	public List<FileBoardDTO> selectFileBoardList(int startRow, int listLimit, String keyword) {
-		List<FileBoardDTO> fileBoardList = null;
+	
+	
+	// 전체 게시물 수 조회 selectFileBoardListCount()
+	// => 파라미터 : 없음, 리턴타입 : int(listCount)
+	public int selectFileList(String keyword) {
+		int selectFileList = 0;
 		
 		con = JdbcUtil.getConnection();
 		
 		try {
-			// board 테이블의 모든 레코드 조회
-			// => 제목에 검색어를 포함하는 레코드 조회(WHERE subject LIKE '%검색어%')
-			//    (단, 쿼리에 직접 '%?%' 형태로 작성 시 ? 문자를 파라미터로 인식하지 못함
-			//    (따라서, setXXX() 메서드에서 문자열 결합으로 "%" + "검색어" + "%" 로 처리)
-			String sql = "SELECT * FROM file_board "
-								+ "WHERE subject "
-								+ "LIKE ? "
-								+ "ORDER BY idx DESC LIMIT ?,?";
+			String sql = "SELECT count(idx) FROM file_board WHERE subject LIKE ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, "%" + keyword + "%");
-			pstmt.setInt(2, startRow);
-			pstmt.setInt(3, listLimit);
-			rs = pstmt.executeQuery();
-			
-			// 전체 레코드를 저장할 ArrayList 객체 생성
-			fileBoardList = new ArrayList<FileBoardDTO>();
-			
-			while(rs.next()) {
-				// 1개 레코드를 저장할 BoardDTO 객체 생성
-				FileBoardDTO fileBoard = new FileBoardDTO();
-				fileBoard.setIdx(rs.getInt("idx"));
-				fileBoard.setName(rs.getString("name"));
-				fileBoard.setPass(rs.getString("pass"));
-				fileBoard.setSubject(rs.getString("subject"));
-				fileBoard.setContent(rs.getString("content"));
-				fileBoard.setOriginal_file(rs.getString("original_file"));
-				fileBoard.setReal_file(rs.getString("real_file"));
-				fileBoard.setDate(rs.getTimestamp("date"));
-				fileBoard.setReadcount(rs.getInt("readcount"));
-//				System.out.println(board);
-				
-				// 전체 레코드 저장하는 List 객체에 1개 레코드 저장된 FileBoardDTO 객체 추가
-				fileBoardList.add(fileBoard);
-			}
-			System.out.println(fileBoardList);
-		} catch (SQLException e) {
-			System.out.println("SQL 구문 오류! - selectFileBoardList()");
-			e.printStackTrace();
-		} finally {
-			// 자원 반환
-			JdbcUtil.close(rs);
-			JdbcUtil.close(pstmt);
-			JdbcUtil.close(con);
-		}
-		
-		return fileBoardList;
-	}
-	
-	
-	// 조회수 증가 작업 수행 - updateReadcount()
-	// => 파라미터 : 글번호(idx)   리턴타입 : void
-	public void updateReadcount(int idx) {
-		con = JdbcUtil.getConnection(); // Connection 객체 가져오기
-		
-		try {
-			// file_board 테이블에서 글번호(idx)가 일치하는 게시물(레코드)의
-			// 조회수(readcount) 값을 1만큼 증가 - UPDATE
-			String sql = "UPDATE file_board "
-							+ "SET readcount=readcount+1 "
-							+ "WHERE idx=?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, idx);
-			pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println("SQL 구문 오류! - updateReadcount()");
-			e.printStackTrace();
-		} finally {
-			// 자원 반환
-			JdbcUtil.close(pstmt);
-			JdbcUtil.close(con);
-		}
-		
-		// 리턴 데이터 없음 - driver_content.jsp
-	}
-	
-	//  게시물 1개 조회 작업 수행 - selectFileBoard()
-	// => 파라미터 : 글번호(idx)   리턴타입 : FileBoardDTO(fileBoard)
-	public FileBoardDTO selectFileBoard(int idx) {
-		FileBoardDTO fileBoard = null;
-		
-		con = JdbcUtil.getConnection(); // Connection 객체 가져오기
-		
-		try {
-			// file_board 테이블에서 글번호(idx) 가 일치(조건) 하는 레코드(전체 컬럼 데이터) 조회
-			// => 조회 결과가 존재할 경우 FileBoardDTO 객체 생성 후 데이터 저장
-			String sql = "SELECT * FROM file_board WHERE idx=?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, idx);
-			rs = pstmt.executeQuery(); // SQL 구문 실행
-			
-			// 조회결과 존재 여부 판별
-			if(rs.next()) { // 조회 결과 존재할 경우
-				fileBoard = new FileBoardDTO(); // FileBoardDTO 객체 생성
-				// 데이터 저장
-				fileBoard.setIdx(rs.getInt("idx"));
-				fileBoard.setName(rs.getString("name"));
-				fileBoard.setPass(rs.getString("pass"));
-				fileBoard.setSubject(rs.getString("subject"));
-				fileBoard.setContent(rs.getString("content"));
-				fileBoard.setOriginal_file(rs.getString("original_file"));
-				fileBoard.setReal_file(rs.getString("real_file"));
-				fileBoard.setDate(rs.getTimestamp("date"));
-				fileBoard.setReadcount(rs.getInt("readcount"));
-			}
-		} catch (SQLException e) {
-			System.out.println("SQL 구문 오류! - selectFileBoard()");
-			e.printStackTrace();
-		} finally {
-			// 자원 반환
-			JdbcUtil.close(rs);
-			JdbcUtil.close(pstmt);
-			JdbcUtil.close(con);
-		}
-		
-		return fileBoard; // driver_content.jsp 로 리턴
-	}
-	
-	// 실제 업로드 된 파일명 조회 - selectRealFile()
-	// => 파라미터 : 글번호(idx), 리턴타입 : String
-	public String selectRealFile(int idx) {
-		String realFile = "";
-		
-		con = JdbcUtil.getConnection();
-		
-		try {
-			String sql = "SELECT real_file FROM file_board WHERE idx=?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, idx);
-			
+			pstmt.setString(1,"%"+keyword + "%");
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				realFile = rs.getString(1);
+				selectFileList = rs.getInt(1);
 			}
+			
 		} catch (SQLException e) {
-			System.out.println("SQL 구문 오류! - selectRealFile()");
 			e.printStackTrace();
 		} finally {
-			// 자원 반환
 			JdbcUtil.close(rs);
 			JdbcUtil.close(pstmt);
 			JdbcUtil.close(con);
 		}
-		
-		return realFile;
+		return selectFileList;
 	}
-	
-	// 글 삭제 작업 수행 - deleteFileBoard()
-	// => 파라미터 : 글번호, 패스워드   리턴타입 : int(deleteCount)
-	public int deleteFileBoard(int idx, String pass) {
-		int deleteCount = 0;
-		
-		con = JdbcUtil.getConnection();
-		
-		try {
-			// file_board 테이블에서 글번호와 패스워드가 일치하는 레코드 삭제(DELETE)
-			String sql = "DELETE FROM file_board "
-						+ "WHERE idx=? AND pass=?";
+	  public FileBoardDTO selectFileBoard(int idx) {
+	      FileBoardDTO dto = null;
+	      con = JdbcUtil.getConnection();
+	      String sql = "SELECT * FROM file_board WHERE idx = ?";
+	      try {
+	         pstmt = con.prepareStatement(sql);
+	         pstmt.setInt(1, idx);
+	         rs = pstmt.executeQuery();
+	         if(rs.next()) {
+	            dto = new FileBoardDTO();
+	            dto.setIdx(rs.getInt("idx"));
+	            dto.setName(rs.getString("name"));
+	            dto.setPass(rs.getString("pass"));
+	            dto.setSubject(rs.getString("subject"));
+	            dto.setContent(rs.getString("content"));
+	            dto.setOriginal_file(rs.getString("original_file"));
+	            dto.setReal_file(rs.getString("real_file"));
+	            dto.setDate(rs.getTimestamp("date"));
+	            dto.setReadcount(rs.getInt("readcount"));
+	         }
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      }finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	         JdbcUtil.close(con);
+	      }
+	      return dto;
+	   }
+	   
+	   public int updateBoard(FileBoardDTO dto) {
+	      int updateCount = 0;
+	      
+	      con = JdbcUtil.getConnection();
+	      
+	      String sql = "UPDATE file_board SET name=?,subject=?,content=? WHERE idx=? AND pass=?";
+	      
+	      try {
+	         pstmt = con.prepareStatement(sql);
+	         pstmt.setString(1,dto.getName());
+	         pstmt.setString(2,dto.getSubject());
+	         pstmt.setString(3,dto.getContent());
+	         pstmt.setInt(4, dto.getIdx());
+	         pstmt.setString(5,dto.getPass());
+	         updateCount = pstmt.executeUpdate();
+	      
+	      } catch (SQLException e) {
+	         // TODO Auto-generated catch block
+	         e.printStackTrace();
+	      }finally {
+	         JdbcUtil.close(pstmt);
+	         JdbcUtil.close(con);
+	      }
+	      
+	      return updateCount;
+	   }
+	   
+	   public void updateReadcount(int idx) {
+	      con = JdbcUtil.getConnection();
+	      String sql = "UPDATE file_board SET readcount=readcount+1 WHERE idx=?";
+	      
+	      try {
+	         pstmt =con.prepareStatement(sql);
+	         pstmt.setInt(1, idx);
+	         pstmt.executeUpdate();
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      
+	      }
+	   }
+	   
+	   public String selectRealFile(int idx) {
+		   String realFile = "";
+		   con = JdbcUtil.getConnection();
+		   
+		   String sql = "SELECT real_file FROM file_board WHERE idx = ?";
+		   try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, idx);
-			pstmt.setString(2, pass);
+			   pstmt.setInt(1, idx);
+			   System.out.println(pstmt);
+			   rs = pstmt.executeQuery();
+			   
+			   if(rs.next()) {
+				   realFile = rs.getString(1);
+				   
+			   }
+		    
+	      } catch (SQLException e) {
+	    	  
+	    	  System.out.println("Sql 구문오류 selectRealFile");
+	      }finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	         JdbcUtil.close(con);
+	      }
+		   return realFile;
+	   }
+	   
+	   
+	   public int filedeleteBoard(int idx, String pass) {
+//	      System.out.println("BoardDAO - deleteBoard()");
+	      int deleteCount = 0;
+	      
+	      con = JdbcUtil.getConnection();
+	      
+	      try {
+	         String sql = "DELETE FROM file_board WHERE idx=? AND pass=?";
+	         pstmt = con.prepareStatement(sql);
+	         pstmt.setInt(1, idx);
+	         pstmt.setString(2, pass);
+	         System.out.println(pstmt);
+	         deleteCount = pstmt.executeUpdate();
+	      } catch (SQLException e) {
+	         System.out.println("SQL 구문 오류! - deleteBoard()");
+	         e.printStackTrace();
+	      } finally {
+	         // DB 자원 반환
+	         JdbcUtil.close(pstmt);
+	         JdbcUtil.close(con);
+	      }
+	      return deleteCount;
+	   }
+
+	   public List<FileBoardDTO> selectFileBoardListCount(int startRow, int listLimit,String keyword) {
+			List<FileBoardDTO> fileBoardList = null;
 			
-			deleteCount = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("SQL 구문 오류! - deleteFileBoard()");
-			e.printStackTrace();
-		} finally {
-			// 자원 반환
-			JdbcUtil.close(pstmt);
-			JdbcUtil.close(con);
-		}
-		
-		return deleteCount;
-	}
-	
-	// 글수정 작업 수행 - updateFileBoard()
-	// => 파라미터 : FileBoardDTO 객체    리턴타입 : int(updateCount)
-	public int updateFileBoard(FileBoardDTO fileBoard) {
-		int updateCount = 0;
-		
-		con = JdbcUtil.getConnection();
-		
-		try {
-			// file_board 테이블에서 글번호와 패스워드가 일치하는 레코드 수정(UPDATE)
-			String sql = "UPDATE file_board "
-						+ "SET subject=?, content=?, original_file=?, real_file=? "
-						+ "WHERE idx=? AND pass=?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, fileBoard.getSubject());
-			pstmt.setString(2, fileBoard.getContent());
-			pstmt.setString(3, fileBoard.getOriginal_file());
-			pstmt.setString(4, fileBoard.getReal_file());
-			pstmt.setInt(5, fileBoard.getIdx());
-			pstmt.setString(6, fileBoard.getPass());
+			con = JdbcUtil.getConnection();
 			
-			updateCount = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("SQL 구문 오류! - updateFileBoard()");
-			e.printStackTrace();
-		} finally {
-			// 자원 반환
-			JdbcUtil.close(pstmt);
-			JdbcUtil.close(con);
+			try {
+				// file_board 테이블의 모든 레코드 조회
+				// => idx 컬럼 기준 내림차순 정렬(ORDER BY 컬럼명 정렬방식)
+				// => 시작행번호부터 게시물 목록 수 만큼으로 갯수 제한(LIMIT 시작행번호,목록수)
+				//    (단, 시작행번호 첫번째는 0부터 시작)
+				//    (또한, LIMIT 에 파라미터 하나만 사용 시 목록 갯수로 사용됨)
+				String sql = "SELECT * FROM file_board WHERE subject LIKE ? ORDER BY idx DESC LIMIT ?,?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%"+ keyword +"%");
+//				pstmt.setString(1, keyword);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, listLimit);
+				rs = pstmt.executeQuery();
+				
+				// 전체 레코드를 저장할 ArrayList 객체 생성
+				fileBoardList = new ArrayList<FileBoardDTO>();
+				
+				while(rs.next()) {
+					// 1개 레코드를 저장할 BoardDTO 객체 생성
+					FileBoardDTO fileBoard = new FileBoardDTO();
+					fileBoard.setIdx(rs.getInt("idx"));
+					fileBoard.setName(rs.getString("name"));
+					fileBoard.setPass(rs.getString("pass"));
+					fileBoard.setSubject(rs.getString("subject"));
+					fileBoard.setContent(rs.getString("content"));
+					fileBoard.setOriginal_file(rs.getString("original_file"));
+					fileBoard.setReal_file(rs.getString("real_file"));
+					fileBoard.setDate(rs.getTimestamp("date"));
+					fileBoard.setReadcount(rs.getInt("readcount"));
+					
+					// 전체 레코드 저장하는 List 객체에 1개 레코드 저장된 FileBoardDTO 객체 추가
+					fileBoardList.add(fileBoard);
+				}
+				
+				System.out.println(fileBoardList);
+			} catch (SQLException e) {
+				System.out.println("SQL 구문 오류! - selectFileBoardList()");
+				e.printStackTrace();
+			} finally {
+				// 자원 반환
+				JdbcUtil.close(rs);
+				JdbcUtil.close(pstmt);
+				JdbcUtil.close(con);
+			}
+			return fileBoardList;
 		}
-		
-		return updateCount;
-	}
-	
+	   
+	  
+		 public int updateFileBoard(FileBoardDTO fileboard) {
+			 int updateCount = 0;
+			 con = JdbcUtil.getConnection();
+			 try {
+				String sql = "UPDATE file_board SET subject=?,content=?,original_file=?,real_file=?  WHERE idx =? AND pass =?";
+				 pstmt = con.prepareStatement(sql);
+				 pstmt.setString(1, fileboard.getSubject());
+				 pstmt.setString(2, fileboard.getContent());
+				 pstmt.setString(3, fileboard.getOriginal_file());
+				 pstmt.setString(4, fileboard.getReal_file());
+				 pstmt.setInt(5,fileboard.getIdx());
+				 pstmt.setString(6, fileboard.getPass());
+				 System.out.println(pstmt);
+				 updateCount=pstmt.executeUpdate();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				JdbcUtil.close(pstmt);
+				JdbcUtil.close(con);
+			}
+			 
+	        
+			 return updateCount;
+		 }
+		 public int selectFileBoardListCount(String keyword) {
+				int listCount = 0;
+				
+				con = JdbcUtil.getConnection();
+				
+				try {
+					// 특정 컬럼 또는 전체 컬럼(*)에 해당하는 레코드 수 조회하기 위해
+					// MySQL 의 COUNT() 함수 활용(SELECT COUNT(컬럼명 또는 *) FROM 테이블명)
+					// => 제목 검색 기능 추가와 일반 목록 기능을 결합하여
+					//    제목이 널스트링("")일 경우 전체 목록 조회 가능
+					String sql = "SELECT COUNT(idx) FROM file_board "
+									+ "WHERE subject LIKE ?";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, "%" + keyword + "%");
+					rs = pstmt.executeQuery();
+					
+					if(rs.next()) {
+						listCount = rs.getInt(1);
+					}
+				} catch (SQLException e) {
+					System.out.println("SQL 구문 오류! - selectFileBoardListCount()");
+					e.printStackTrace();
+				} finally {
+					// 자원 반환
+					JdbcUtil.close(rs);
+					JdbcUtil.close(pstmt);
+					JdbcUtil.close(con);
+				}
+				
+				return listCount;
+			}
+	   
 }
+
 
 
 

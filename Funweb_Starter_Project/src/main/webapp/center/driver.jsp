@@ -1,7 +1,7 @@
-<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="board.FileBoardDTO"%>
-<%@page import="java.util.List"%>
 <%@page import="board.FileBoardDAO"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
@@ -14,7 +14,6 @@ int pageNum = 1; // 현재 페이지 번호 설정(pageNum 파라미터 사용)
 if(request.getParameter("pageNum") != null) {
 	pageNum = Integer.parseInt(request.getParameter("pageNum"));
 }
-
 int startRow = (pageNum - 1) * listLimit;
 
 // ---------------------------------------------------------
@@ -32,7 +31,7 @@ if(keyword == null) {
 // => 파라미터 : 시작행번호, 페이지 당 게시물 목록 수
 //    (검색 기능 통합으로 인해 항상 키워드도 함께 전달)
 // => 리턴타입 : List<FileBoardDTO>(fileBoardList)
-List<FileBoardDTO> fileBoardList = dao.selectFileBoardList(startRow, listLimit, keyword);
+List<FileBoardDTO> fileBoardList = dao.selectFileBoardListCount(startRow, listLimit, keyword);
 
 // 날짜 형식 변경
 SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd HH:mm");

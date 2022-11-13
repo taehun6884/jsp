@@ -1,3 +1,5 @@
+<%@page import="free_board.FreeBoardDTO"%>
+<%@page import="free_board.FreeBoardDAO"%>
 <%@page import="board.BoardDTO"%>
 <%@page import="board.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -9,8 +11,8 @@ String pageNum = request.getParameter("pageNum");
 
 // BoardDAO 객체의 selectBoard() 메서드 호출하여 게시물 1개 정보 조회 - 메서드 재사용
 // => 파라미터 : 글번호(idx)    리턴타입 : BoardDTO(board)
-BoardDAO dao = new BoardDAO();
-BoardDTO board = dao.selectBoard(idx);
+FreeBoardDAO dao = new FreeBoardDAO();
+FreeBoardDTO board = dao.ListFreeBoardInfo(idx);
 %>	
 <!DOCTYPE html>
 <html>
@@ -22,17 +24,7 @@ BoardDTO board = dao.selectBoard(idx);
 <%
 	// 세션 아이디 가져와서 sId 변수에 저장
 	String sId = (String)session.getAttribute("sId");
-	if(sId != null && !sId.equals("admin")) {
-// 		System.out.println("세션 아이디 없음!");
-		// 세션 아이디가 없을 경우 "잘못된 접근입니다!" 출력 후 이전페이지로 돌아가기
-		%>
-		<script type="text/javascript">
-		alert("잘못된 접근입니다!");
-		history.back();
-		</script>
-		<%
-	}
-	%>	
+%>	
 </head>
 <body>
 	<div id="wrap">
@@ -48,7 +40,7 @@ BoardDTO board = dao.selectBoard(idx);
 		<!-- 본문 내용 -->
 		<article>
 			<h1>Notice Update</h1>
-			<form action="notice_updatePro.jsp" method="post">
+			<form action="free_updatePro.jsp" method="post">
 				<!-- 입력받지 않은 데이터(글번호, 페이지번호)도 폼 태그에 함께 포함시키기 -->
 				<input type="hidden" name="idx" value="<%=idx %>">
 				<input type="hidden" name="pageNum" value="<%=pageNum %>">

@@ -2,7 +2,7 @@
 #sub_img{
 	width: 971px;
 	height: 179px;
-	background-image: url("../images/company/sub_back.png");
+	background-image: url("../images/company/sub_back.");
 	background-repeat: no-repeat;
 	background-position: left top; 
 }

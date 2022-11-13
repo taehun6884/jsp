@@ -30,33 +30,10 @@
 		<article>
 			<h1>Welcome</h1>
 			<figure class="ceo">
-				<img src="../images/company/CEO.jpg">
-				<figcaption>Fun Web CEO Michael</figcaption>
+				<img src="../images/company/good.jpg" width="190" height="230">
+				<figcaption>김태훈</figcaption>
 			</figure>
-			<p>Lorem ipsum ipsum dolor... tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus Lorem ipsum ipsum
-				dolor...tellus Lorem ipsum ipsum dolor...tellus</p>
+			<p>안녕하세요 ㅎㅎ</p>
 		</article>
 
 
