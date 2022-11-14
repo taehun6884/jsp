@@ -323,7 +323,11 @@ public class FileBoardDAO {
 				
 				return listCount;
 			}
-	   
+	   public int deleteFileBoard(int idx, String pass) {
+		   int deleteCount = 0;
+		   
+		   return deleteCount;
+	   }
 }
 
 
