@@ -6,9 +6,9 @@
  *       the last modified time of the source file after
  *       generation to assist with modification tracking.
  */
-package org.apache.jsp.jsp10_005fjava_005fmail;
+package java10_java_mail;
 
-import javax.servlet.*;
+import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 import javax.mail.Transport;
@@ -20,7 +20,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Authenticator;
-import jsp10_java_mail.GoogleMailAuthenticator;
 import java.util.Properties;
 
 public final class mail_005fpro_jsp extends org.apache.jasper.runtime.HttpJspBase

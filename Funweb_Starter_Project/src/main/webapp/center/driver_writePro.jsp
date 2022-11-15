@@ -95,7 +95,6 @@ if(insertCount > 0) {
 	</script>
 	<%
 }
-
 %>
 
 

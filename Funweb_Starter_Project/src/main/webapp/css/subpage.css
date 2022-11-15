@@ -2,7 +2,7 @@
 #sub_img{
 	width: 971px;
 	height: 179px;
-	background-image: url("../images/company/sub_back.");
+	background-image: url("../images/company/sub_back.png");
 	background-repeat: no-repeat;
 	background-position: left top; 
 }
@@ -254,6 +254,40 @@ article table#notice_content td textarea {
 article table#notice_content .reply_btn {
 	height: 65px;
 }
+
+
+/* 댓글 작성 항목 CSS */
+#replyTextarea {
+	width: 400px;
+	height: 40px;
+	resize: none; /* Textarea 크기 조절 방지 */
+	vertical-align: middle;
+}
+
+#replySubmit {
+	height: 45px;
+	vertical-align: middle;
+}
+
+/* 댓글 목록 표시 항목 CSS */
+#replyContent {
+	display: inline-block;
+	width: 250px;
+	margin-top: 5px;
+}
+
+#replyId {
+	display: inline-block;
+	width: 80px;
+	margin-top: 5px;
+}
+
+#replyDate {
+	display: inline-block;
+	width: 150px;
+	margin-top: 5px;
+}
+
 /* ----------------------------------- */
 
 article p{

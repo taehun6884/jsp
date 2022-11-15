@@ -4,7 +4,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-String sid = (String)session.getAttribute("sId");
+// 세션 아이디 가져오기
+String sId = (String)session.getAttribute("sId");
+
 // 글번호, 페이지번호 파라미터 가져오기
 // => 단, 페이지번호는 다음 페이지로 전달하는 용도로만 사용하므로 String 타입 사용도 가능
 int idx = Integer.parseInt(request.getParameter("idx"));
@@ -82,18 +84,44 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // ex) 2022-
 			</table>
 
 			<div id="table_search">
-				
-				<%if(sid !=null && sid.equals("admin")){ %>
-				<input type="button" value="글수정" class="btn" 
-						onclick="location.href='notice_update.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'"> 
-				<input type="button" value="글삭제" class="btn" 
-						onclick="location.href='notice_delete.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'"> 
+				<!-- 글수정, 글삭제 버튼은 세션 아이디가 null 이 아니고 "admin" 일 때 표시 -->
+				<%if(sId != null && sId.equals("admin")) { %>
+					<input type="button" value="글수정" class="btn" 
+							onclick="location.href='notice_update.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'"> 
+					<input type="button" value="글삭제" class="btn" 
+							onclick="location.href='notice_delete.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'">
 				<%} %>
 				<input type="button" value="글목록" class="btn" 
 						onclick="location.href='notice.jsp?pageNum=<%=pageNum%>'">
 			</div>
 
 			<div class="clear"></div>
+			
+			<div id="replyArea">
+				<!-- insertForm 영역(댓글 작성 영역) - 세션 아이디 존재 시에만 표시 -->
+				<%if(session.getAttribute("sId") != null) { %>
+					<div id="insertForm">
+						<form action="content_reply_writePro.jsp" method="post">
+							<!-- 글번호, 게시판타입, 페이지번호를 함께 전달 -->
+							<input type="hidden" name="ref_idx" value="<%=idx%>">
+							<input type="hidden" name="board_type" value="notice">
+							<input type="hidden" name="pageNum" value="<%=pageNum%>">
+							<textarea rows="3" cols="50" name="content"></textarea> 
+							<input type="submit" value="등록">
+						</form>
+					</div>
+				<%} %>
+				<!-- replyViewArea 영역(댓글 표시 영역) -->
+				<div id="replyViewArea">
+					안녕하세요. 댓글입니다.  관리자  22-11-15 09:17<br>
+					안녕하세요. 댓글입니다.  관리자  22-11-15 09:17<br>
+					안녕하세요. 댓글입니다.  관리자  22-11-15 09:17<br>
+				</div>
+				
+				<div id="replyPageArea">
+					1  2  3  4
+				</div>	
+			</div>
 		</article>
 
 		<div class="clear"></div>

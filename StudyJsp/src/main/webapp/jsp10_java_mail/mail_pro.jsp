@@ -1,4 +1,4 @@
-<%@page import="jsp10_java_mail.GoogleMailAuthenticator"%>
+<%@page import="java10_java_mail.GoogleMailAuthenticator"%>
 <%@page import="javax.mail.Transport"%>
 <%@page import="java.util.Date"%>
 <%@page import="javax.mail.Message.RecipientType"%>

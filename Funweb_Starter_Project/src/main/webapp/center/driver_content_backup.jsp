@@ -1,6 +1,3 @@
-<%@page import="board.BoardReplyDTO"%>
-<%@page import="java.util.List"%>
-<%@page import="board.BoardReplyDAO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="board.FileBoardDTO"%>
 <%@page import="board.FileBoardDAO"%>
@@ -11,10 +8,6 @@
 // => 단, 페이지번호는 다음 페이지로 전달하는 용도로만 사용하므로 String 타입 사용도 가능
 int idx = Integer.parseInt(request.getParameter("idx"));
 String pageNum = request.getParameter("pageNum");
-// 만약, pageNum 값이 null 일 경우 "1" 값으로 변경
-if(pageNum == null) {
-	pageNum = "1";
-}
 
 FileBoardDAO dao = new FileBoardDAO();
 
@@ -35,15 +28,12 @@ fileBoard.setContent(fileBoard.getContent().replaceAll(System.getProperty("line.
 
 // 날짜 표시 형식을 "xxxx-xx-xx xx:xx:xx"(년-월-일 시:분:초) 형식으로 변경
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // ex) 2022-11-07 09:23:00
-
-// 게시판 타입을 변수에 저장
-String board_type = "driver";
 %>	
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>center/driver_content.jsp</title>
+<title>center/notice_content.jsp</title>
 <link href="../css/default.css" rel="stylesheet" type="text/css">
 <link href="../css/subpage.css" rel="stylesheet" type="text/css">
 </head>
@@ -101,63 +91,15 @@ String board_type = "driver";
 			</table>
 
 			<div id="table_search">
-				<!-- 세션 아이디 존재할 경우에만 글수정, 글삭제 버튼 표시 -->
-				<%if(session.getAttribute("sId") != null) { %>
-					<input type="button" value="글수정" class="btn" 
-							onclick="location.href='driver_update.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'"> 
-					<input type="button" value="글삭제" class="btn" 
-							onclick="location.href='driver_delete.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'">
-				<%} %> 
+				<input type="button" value="글수정" class="btn" 
+						onclick="location.href='driver_update.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'"> 
+				<input type="button" value="글삭제" class="btn" 
+						onclick="location.href='driver_delete.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'"> 
 				<input type="button" value="글목록" class="btn" 
 						onclick="location.href='driver.jsp?pageNum=<%=pageNum%>'">
 			</div>
 
 			<div class="clear"></div>
-			
-			<div id="replyArea">
-				<!-- insertForm 영역(댓글 작성 영역) - 세션 아이디 존재 시에만 표시 -->
-				<%if(session.getAttribute("sId") != null) { %>
-					<div id="insertForm">
-						<form action="content_reply_writePro.jsp" method="post">
-							<!-- 글번호, 게시판타입, 페이지번호를 함께 전달 -->
-							<input type="hidden" name="ref_idx" value="<%=idx%>">
-							<input type="hidden" name="board_type" value="<%=board_type%>">
-							<input type="hidden" name="pageNum" value="<%=pageNum%>">
-							<textarea rows="3" cols="50" name="content" id="replyTextarea"></textarea> 
-							<input type="submit" value="등록" id="replySubmit">
-						</form>
-					</div>
-				<%} %>
-				<!-- replyViewArea 영역(댓글 표시 영역) -->
-				<div id="replyViewArea">
-					<%
-					// 페이징 처리를 위한 값 설정 생략 => driver.jsp & notice.jsp 와 동일
-					// 페이징 처리를 위해 조회 시 필요한 값 임의 설정
-					int startRow = 0; // 계산 생략
-					int listLimit = 5;
-					
-					// BoardReplyDAO - selectReplyList() 메서드를 호출하여 댓글 목록 가져오기
-					// => 파라미터 : 게시물글번호, 게시판타입, startRow, listLimit 
-					//    리턴타입 : List<BoardReplyDTO>(replyList)
-					BoardReplyDAO replyDao = new BoardReplyDAO();
-					List<BoardReplyDTO> replyList = replyDao.selectReplyList(idx, board_type, startRow, listLimit);
-					
-					// List 객체 크기만큼 반복
-					for(BoardReplyDTO replyBoard : replyList) {
-						%>
-						<a href=""><img src="../images/center/delete.png" width="10px" height="10px"></a>
-						<span id="replyContent"><%=replyBoard.getContent() %></span>
-						<span id="replyId"><%=replyBoard.getId() %></span>
-						<span id="replyDate"><%=sdf.format(replyBoard.getDate()) %></span><br>
-						<%
-					}
-					%>
-				</div>
-				
-				<div id="replyPageArea">
-					1  2  3  4
-				</div>	
-			</div>
 		</article>
 
 		<div class="clear"></div>

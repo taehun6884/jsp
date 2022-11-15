@@ -1,4 +1,4 @@
-package jsp10_java_mail;
+package java10_java_mail;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
