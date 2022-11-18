@@ -27,5 +27,6 @@
 	<c:remove var="str"/>
 	<h3>\${str } 값 삭제 후 = ${str }</h3>
 	<h3>\${str } 값이 비어있는가? ${empty str }</h3>
+	
 </body>
 </html>
