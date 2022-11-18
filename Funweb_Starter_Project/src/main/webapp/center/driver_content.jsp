@@ -145,7 +145,8 @@ String board_type = "driver";
 					// List 객체 크기만큼 반복
 					for(BoardReplyDTO replyBoard : replyList) {
 						%>
-						<a href=""><img src="../images/center/delete.png" width="10px" height="10px"></a>
+						<a href="content_reply_deletePro.jsp?idx=<%=replyBoard.getIdx() %>&pageNum=<%=pageNum%>&board_type=<%=replyBoard.getBoard_type()%>&ref_idx=<%=replyBoard.getRef_idx()%>">
+						<img src="../images/center/delete.png" width="10px" height="10px"></a>
 						<span id="replyContent"><%=replyBoard.getContent() %></span>
 						<span id="replyId"><%=replyBoard.getId() %></span>
 						<span id="replyDate"><%=sdf.format(replyBoard.getDate()) %></span><br>

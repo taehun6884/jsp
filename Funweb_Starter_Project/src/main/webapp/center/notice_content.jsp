@@ -1,3 +1,6 @@
+<%@page import="board.BoardReplyDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="board.BoardReplyDAO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="board.BoardDTO"%>
 <%@page import="board.BoardDAO"%>
@@ -35,6 +38,7 @@ board.setContent(board.getContent().replaceAll(System.getProperty("line.separato
 
 // 날짜 표시 형식을 "xxxx-xx-xx xx:xx:xx"(년-월-일 시:분:초) 형식으로 변경
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // ex) 2022-11-07 09:23:00
+String board_type="notice";
 %>	
 <!DOCTYPE html>
 <html>
@@ -104,18 +108,38 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // ex) 2022-
 						<form action="content_reply_writePro.jsp" method="post">
 							<!-- 글번호, 게시판타입, 페이지번호를 함께 전달 -->
 							<input type="hidden" name="ref_idx" value="<%=idx%>">
-							<input type="hidden" name="board_type" value="notice">
+							<input type="hidden" name="board_type" value="<%=board_type%>">
 							<input type="hidden" name="pageNum" value="<%=pageNum%>">
-							<textarea rows="3" cols="50" name="content"></textarea> 
-							<input type="submit" value="등록">
+							<textarea rows="3" cols="50" name="content" id="replyTextarea"></textarea> 
+							<input type="submit" value="등록" id="replySubmit">
 						</form>
 					</div>
 				<%} %>
 				<!-- replyViewArea 영역(댓글 표시 영역) -->
 				<div id="replyViewArea">
-					안녕하세요. 댓글입니다.  관리자  22-11-15 09:17<br>
-					안녕하세요. 댓글입니다.  관리자  22-11-15 09:17<br>
-					안녕하세요. 댓글입니다.  관리자  22-11-15 09:17<br>
+					<%
+					// 페이징 처리를 위한 값 설정 생략 => driver.jsp & notice.jsp 와 동일
+					// 페이징 처리를 위해 조회 시 필요한 값 임의 설정
+					int startRow = 0; // 계산 생략
+					int listLimit = 5;
+					
+					// BoardReplyDAO - selectReplyList() 메서드를 호출하여 댓글 목록 가져오기
+					// => 파라미터 : 게시물글번호, 게시판타입, startRow, listLimit 
+					//    리턴타입 : List<BoardReplyDTO>(replyList)
+					BoardReplyDAO replyDao = new BoardReplyDAO();
+					List<BoardReplyDTO> replyList = replyDao.selectReplyList(idx, board_type, startRow, listLimit);
+					
+					// List 객체 크기만큼 반복
+					for(BoardReplyDTO replyBoard : replyList) {
+						%>
+						<a href="content_reply_deletePro.jsp?idx=<%=replyBoard.getIdx() %>&pageNum=<%=pageNum%>&board_type=<%=replyBoard.getBoard_type()%>&ref_idx=<%=replyBoard.getRef_idx()%>">
+						<img src="../images/center/delete.png" width="10px" height="10px"></a>
+						<span id="replyContent"><%=replyBoard.getContent() %></span>
+						<span id="replyId"><%=replyBoard.getId() %></span>
+						<span id="replyDate"><%=sdf.format(replyBoard.getDate()) %></span><br>
+						<%
+					}
+					%>
 				</div>
 				
 				<div id="replyPageArea">

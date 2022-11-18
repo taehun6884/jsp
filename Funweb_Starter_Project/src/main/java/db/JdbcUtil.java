@@ -1,10 +1,15 @@
-package board;
+package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 // 데이터베이스 작업 준비 및 해제(자원반환) 작업을 공통으로 수행할 JdbcUtil 클래스 정의
 public class JdbcUtil {
@@ -15,32 +20,29 @@ public class JdbcUtil {
 	// => 단, JdbcUtil 클래스의 인스턴스 생성 없이도 메서드 호출이 가능하도록
 	//    static 메서드로 정의
 	public static Connection getConnection() {
-		// 데이터베이스 연결 객체를 저장할 Connection 타입 변수 선언
 		Connection con = null;
 		
-		// 0단계. DB 연결에 필요한 정보 문자열 4가지를 변수에 별도로 저장
-		String driver = "com.mysql.cj.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/funweb5";
-		String user = "root";
-		String password = "1234";
 		
 		try {
-			// 1단계. JDBC 드라이버 로드
-			Class.forName(driver);
-
-			// 2단계. DB 연결
-			// => 연결 성공 시 java.sql.Connection 타입 객체 리턴됨
-			con = DriverManager.getConnection(url, user, password);
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 클래스 로드 실패!");
+			Context initCtx = new InitialContext();
+			
+//		Context envCtx = (Context)initCtx.lookup("java:comp/env");
+			
+//		DataSource ds = (DataSource)envCtx.lookup("jdbc/MySQL");
+			
+			DataSource ds = (DataSource)initCtx.lookup("java:comp/env/jdbc/MySQL");
+			
+			con = ds.getConnection();
+		
+//			con.setAutoCommit(false);
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			System.out.println("DB 연결 실패!");
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// 주의! Connection 객체는 외부로 리턴해야하므로 close() 메서드 호출하지 않는다!
 		
-		// 데이터베이스 연결 객체가 저장된 Connection 타입 변수값 리턴
 		return con;
 	}
 	

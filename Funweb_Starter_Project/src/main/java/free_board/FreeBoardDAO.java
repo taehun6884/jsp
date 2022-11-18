@@ -9,7 +9,7 @@ import java.util.List;
 
 import board.BoardDTO;
 import board.FileBoardDTO;
-import board.JdbcUtil;
+import db.JdbcUtil;
 
 public class FreeBoardDAO {
 	Connection con;

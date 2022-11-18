@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import db.JdbcUtil;
+
 
 public class BoardReplyDAO {
 	private Connection con;
@@ -100,7 +102,30 @@ public class BoardReplyDAO {
 		
 		return replyList;
 	}
-	
+
+	public int deleteReply(int idx) {
+		int deleteCount = 0;
+		
+		con = JdbcUtil.getConnection();
+		
+		try {
+			// board 테이블에서 글번호와 패스워드가 일치하는 레코드 삭제(DELETE)
+			String sql = "DELETE FROM board_reply "
+						+ "WHERE idx=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			
+			deleteCount = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 구문 오류! - deleteBoard()");
+			e.printStackTrace();
+		} finally {
+			// 자원 반환
+			JdbcUtil.close(pstmt);
+			JdbcUtil.close(con);
+		}
+		return deleteCount;
+	}
 }
 
 
