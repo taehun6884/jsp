@@ -1,12 +1,14 @@
+<%@page import="board.BoardReplyDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="board.BoardReplyDAO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="board.BoardDTO"%>
 <%@page import="board.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 // 세션 아이디 가져오기
-// String sId = (String)session.getAttribute("sId");
+String sId = (String)session.getAttribute("sId");
 
 // 글번호, 페이지번호 파라미터 가져오기
 // => 단, 페이지번호는 다음 페이지로 전달하는 용도로만 사용하므로 String 타입 사용도 가능
@@ -36,12 +38,7 @@ board.setContent(board.getContent().replaceAll(System.getProperty("line.separato
 
 // 날짜 표시 형식을 "xxxx-xx-xx xx:xx:xx"(년-월-일 시:분:초) 형식으로 변경
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // ex) 2022-11-07 09:23:00
-
-// ===============================================================================
-// JSTL 과 EL 을 사용하여 BoardDTO 객체 데이터 출력하기
-// 자바 객체(BoardDTO 객체)를 JSTL 과 EL 로 접근하기 위해 pageContext 객체에 저장
-pageContext.setAttribute("board", board);
-// ===============================================================================
+String board_type="notice";
 %>	
 <!DOCTYPE html>
 <html>
@@ -67,64 +64,82 @@ pageContext.setAttribute("board", board);
 		<article>
 			<h1>Notice Content</h1>
 			<table id="notice_content">
-				<!-- BoardDTO 객체에 저장된 데이터 표시(EL 활용) -->
+				<!-- BoardDTO 객체에 저장된 데이터 표시 -->
 				<tr>
 					<td>글번호</td>
-					<td>${board.idx }</td>
+					<td><%=board.getIdx() %></td>
 					<td>글쓴이</td>
-					<td>${board.name }</td>
+					<td><%=board.getName() %></td>
 				</tr>
 				<tr>
 					<td>작성일</td>
-					<td>${board.date }</td>
+					<td><%=sdf.format(board.getDate()) %></td>
 					<td>조회수</td>
-					<td>${board.readcount }</td>
+					<td><%=board.getReadcount() %></td>
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td colspan="3">${board.subject }</td>
+					<td colspan="3"><%=board.getSubject() %></td>
 				</tr>
 				<tr>
 					<td height="300">내용</td>
-					<td colspan="3">${board.content }</td>
+					<td colspan="3"><%=board.getContent() %></td>
 				</tr>
 			</table>
 
 			<div id="table_search">
 				<!-- 글수정, 글삭제 버튼은 세션 아이디가 null 이 아니고 "admin" 일 때 표시 -->
-				<%-- JSTL 과 EL 을 사용하여 동일한 판별 작업 수행 --%>
-				<%-- session 객체는 EL 에서 sessionScope 객체로 접근 --%>
-				<c:if test="${not empty sessionScope.sId and sessionScope.sId eq 'admin'}">
+				<%if(sId != null && sId.equals("admin")) { %>
 					<input type="button" value="글수정" class="btn" 
-							onclick="location.href='notice_update.jsp?idx=${param.idx }&pageNum=${param.pageNum }'"> 
+							onclick="location.href='notice_update.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'"> 
 					<input type="button" value="글삭제" class="btn" 
-							onclick="location.href='notice_delete.jsp?idx=${param.idx }&pageNum=${param.pageNum }'">
-				</c:if>
+							onclick="location.href='notice_delete.jsp?idx=<%=idx%>&pageNum=<%=pageNum%>'">
+				<%} %>
 				<input type="button" value="글목록" class="btn" 
-						onclick="location.href='notice.jsp?pageNum=${param.pageNum }'">
+						onclick="location.href='notice.jsp?pageNum=<%=pageNum%>'">
 			</div>
 
 			<div class="clear"></div>
 			
 			<div id="replyArea">
 				<!-- insertForm 영역(댓글 작성 영역) - 세션 아이디 존재 시에만 표시 -->
-				<c:if test="${not empty sessionScope.sId }">
+				<%if(session.getAttribute("sId") != null) { %>
 					<div id="insertForm">
 						<form action="content_reply_writePro.jsp" method="post">
 							<!-- 글번호, 게시판타입, 페이지번호를 함께 전달 -->
-							<input type="hidden" name="ref_idx" value="${param.idx }">
-							<input type="hidden" name="board_type" value="notice">
-							<input type="hidden" name="pageNum" value="${param.pageNum }">
-							<textarea rows="3" cols="50" name="content"></textarea> 
-							<input type="submit" value="등록">
+							<input type="hidden" name="ref_idx" value="<%=idx%>">
+							<input type="hidden" name="board_type" value="<%=board_type%>">
+							<input type="hidden" name="pageNum" value="<%=pageNum%>">
+							<textarea rows="3" cols="50" name="content" id="replyTextarea"></textarea> 
+							<input type="submit" value="등록" id="replySubmit">
 						</form>
 					</div>
-				</c:if>
+				<%} %>
 				<!-- replyViewArea 영역(댓글 표시 영역) -->
 				<div id="replyViewArea">
-					안녕하세요. 댓글입니다.  관리자  22-11-15 09:17<br>
-					안녕하세요. 댓글입니다.  관리자  22-11-15 09:17<br>
-					안녕하세요. 댓글입니다.  관리자  22-11-15 09:17<br>
+					<%
+					// 페이징 처리를 위한 값 설정 생략 => driver.jsp & notice.jsp 와 동일
+					// 페이징 처리를 위해 조회 시 필요한 값 임의 설정
+					int startRow = 0; // 계산 생략
+					int listLimit = 5;
+					
+					// BoardReplyDAO - selectReplyList() 메서드를 호출하여 댓글 목록 가져오기
+					// => 파라미터 : 게시물글번호, 게시판타입, startRow, listLimit 
+					//    리턴타입 : List<BoardReplyDTO>(replyList)
+					BoardReplyDAO replyDao = new BoardReplyDAO();
+					List<BoardReplyDTO> replyList = replyDao.selectReplyList(idx, board_type, startRow, listLimit);
+					
+					// List 객체 크기만큼 반복
+					for(BoardReplyDTO replyBoard : replyList) {
+						%>
+						<a href="content_reply_deletePro.jsp?idx=<%=replyBoard.getIdx() %>&pageNum=<%=pageNum%>&board_type=<%=replyBoard.getBoard_type()%>&ref_idx=<%=replyBoard.getRef_idx()%>">
+						<img src="../images/center/delete.png" width="10px" height="10px"></a>
+						<span id="replyContent"><%=replyBoard.getContent() %></span>
+						<span id="replyId"><%=replyBoard.getId() %></span>
+						<span id="replyDate"><%=sdf.format(replyBoard.getDate()) %></span><br>
+						<%
+					}
+					%>
 				</div>
 				
 				<div id="replyPageArea">

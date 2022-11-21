@@ -11,6 +11,14 @@ public class StudentDTO {
 	private int idx;
 	private String name;
 	
+	public StudentDTO() {
+		super();
+	}
+	public StudentDTO(int idx, String name) {
+		super();
+		this.idx = idx;
+		this.name = name;
+	}
 	// 2. 멤버변수에 접근할 Getter/Setter 메서드 정의
 	public int getIdx() {
 		return idx;
