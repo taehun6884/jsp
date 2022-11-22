@@ -1,7 +1,11 @@
 package test2_forwarding;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +24,10 @@ public class TestServlet_Dispatch extends HttpServlet {
 		int age = Integer.parseInt(request.getParameter("age"));
 		System.out.println("이름 : " + name);
 		System.out.println("나이 : " + age);
+		
+		RequestDispatcher dis = request.getRequestDispatcher("test6_dispatch_result.jsp");
+		dis.forward(request, response);
+		
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

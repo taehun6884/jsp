@@ -20,6 +20,8 @@ public class TestServlet_Redirect extends HttpServlet {
 		int age = Integer.parseInt(request.getParameter("age"));
 		System.out.println("이름 : " + name);
 		System.out.println("나이 : " + age);
+		
+		response.sendRedirect("test6_redirect_result.jsp");
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
