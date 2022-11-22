@@ -1,3 +1,4 @@
+<%@page import="com.mysql.cj.protocol.a.NativePacketHeader"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="board.BoardDTO"%>
 <%@page import="java.util.List"%>
@@ -5,12 +6,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%-- JSTL 의 형식(Formatting) 을 지정하기 위한 라이브러리 : fmt --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%
-// 세션 아이디 가져오기
-// String sId = (String)session.getAttribute("sId");
 
+
+<%
+// String sid = (String)session.getAttribute("sId");
 // board 테이블의 게시물 목록 조회
 BoardDAO dao = new BoardDAO();
 
@@ -49,11 +49,7 @@ int startRow = (pageNum - 1) * listLimit;
 // => 리턴타입 : List<BoardDTO>(boardList)
 List<BoardDTO> boardList = dao.selectBoardList(startRow, listLimit);
 
-// ===============================================================================
-// JSTL 과 EL 을 사용하여 BoardDTO 객체 데이터 출력하기
-// 자바 객체(List<BoardDTO> 객체)를 JSTL 과 EL 로 접근하기 위해 pageContext 객체에 저장
 pageContext.setAttribute("boardList", boardList);
-// ===============================================================================
 %>	
 <!DOCTYPE html>
 <html>
@@ -68,7 +64,7 @@ pageContext.setAttribute("boardList", boardList);
 		<!-- 헤더 들어가는곳 -->
 		<jsp:include page="../inc/top.jsp" />
 		<!-- 헤더 들어가는곳 -->
-
+		
 		<!-- 본문들어가는 곳 -->
 		<!-- 본문 메인 이미지 -->
 		<div id="sub_img_center"></div>
@@ -86,33 +82,27 @@ pageContext.setAttribute("boardList", boardList);
 					<th class="tread">Read</th>
 				</tr>
 				<!-- 글목록을 반복 표시할 위치 -->
-				<!-- List 객체(boardList) 크기만큼 반복(JSTL & EL 사용) -->
+				<!-- List 객체(boardList) 크기만큼 반복 -->
+
 				<c:forEach var="board" items="${boardList }">
 					<!-- 제목 행을 클릭 시 글 상세 정보 표시(notice_content.jsp) 로 이동 -->
 					<!-- 파라미터로 글번호(idx), 페이지번호(pageNum) 전달 -->
-					<%-- pageNum 파라미터가 없을 경우 기본값 1 로 설정(<c:out> 태그의 default 속성 활용)  --%>
 					<tr onclick="location.href='notice_content.jsp?idx=${board.idx }&pageNum=<c:out value='${param.pageNum }' default='1' />'">
 						<td>${board.idx }</td>
 						<td class="td_title">${board.subject }</td>
 						<td>${board.name }</td>
-						<%-- JSTL 의 fmt 라이브러리를 활용한 날짜 및 시각 형식 변환 --%>
-<%-- 						<td><fmt:formatDate value="${board.date }"/></td> <!-- yyyy. MM. dd. -->  --%>
-<%-- 						<td><fmt:formatDate value="${board.date }" type="date"/></td> <!-- yyyy. MM. dd. -->  --%>
-<%-- 						<td><fmt:formatDate value="${board.date }" type="time"/></td> <!-- a HH:mm:ss -->  --%>
-<%-- 						<td><fmt:formatDate value="${board.date }" type="both"/></td> <!-- yyyy. MM. dd. a HH:mm:ss -->  --%>
-						<%-- 패턴 문자열을 통해 지정한 형식으로 변환 --%>
-						<td><fmt:formatDate value="${board.date }" pattern="yy-MM-dd HH:mm" /></td> 
+<%-- 						<td><fmt:formatDate value="${board.date }" type="date"/></td> <!-- 출력 날짜 형식 변환 --> --%>
+<%-- 						<td><fmt:formatDate value="${board.date }" type="both"/></td> <!-- 출력 날짜 형식 변환 --> --%>
+						<td><fmt:formatDate value="${board.date }" pattern="yy-MM-dd HH:mm"/></td> <!-- 출력 날짜 형식 변환 -->
 						<td>${board.readcount }</td>
 					</tr>
 				</c:forEach>
 			</table>
+			<c:if test="${not empty sessionScope.sId and sessionScope.sId eq 'admin' }">
 			<div id="table_search">
-				<!-- 글쓰기 버튼은 세션 아이디가 null 이 아니고 "admin" 일 때 표시 -->
-				<%-- JSTL & EL 활용 --%>
-				<c:if test="${not empty sessionScope.sId and sessionScope.sId eq 'admin'}">
-					<input type="button" value="글쓰기" class="btn" onclick="location.href='notice_write.jsp'">
-				</c:if>
+				<input type="button" value="글쓰기" class="btn" onclick="location.href='notice_write.jsp'">
 			</div>
+			</c:if>
 			<div id="table_search">
 				<form action="notice_search.jsp" method="get">
 					<input type="text" name="keyword" class="input_box">
@@ -170,30 +160,23 @@ pageContext.setAttribute("boardList", boardList);
 					endPage = maxPage;
 				}
 				
-				// =====================================================================
-				// JSTL 과 EL 을 통해 값에 접근하기 위해 pageContext 객체에 저장
 				pageContext.setAttribute("pageNum", pageNum);
 				pageContext.setAttribute("maxPage", maxPage);
 				pageContext.setAttribute("startPage", startPage);
 				pageContext.setAttribute("endPage", endPage);
 				%>
-				
 				<!-- 이전 페이지(Prev) 버튼 클릭 시 현재 페이지번호 - 1 값 전달 -->
 				<!-- 단, 현재 페이지번호가 1보다 클 경우 - 1 값을 전달, 아니면 링크 동작 제거 -->
-				<%-- JSTL 의 <c:choose><c:when><c:otherwise> 조합하여 동일한 작업 수행 --%>
 				<c:choose>
-					<c:when test="${pageNum gt 1 }"> <%-- if(pageNum > 1) {} 문과 동일 --%>
+					<c:when test="${pageNum gt 1 }">
 						<a href="notice.jsp?pageNum=${pageNum - 1 }">Prev</a>
 					</c:when>
-					<c:otherwise> <%-- else 문과 동일 --%>
+					<c:otherwise>
 						<a href="javascript:void(0)">Prev</a>
 					</c:otherwise>
 				</c:choose>
-				
 				<!-- for 문을 사용하여 시작페이지 ~ 끝페이지 까지 페이지 번호 표시 -->
-				<%-- <c:forEach> 와 <c:choose> 결합하여 동일한 작업 수행 --%>
 				<c:forEach var="i" begin="${startPage }" end="${endPage }" step="1">
-					<%-- 단, 현재 페이지와 페이지 번호가 같을 경우 하이퍼링크 제거하고 번호만 표시 --%>
 					<c:choose>
 						<c:when test="${pageNum eq i }">
 							<a href="javascript:void(0)">${i }</a>
@@ -203,9 +186,6 @@ pageContext.setAttribute("boardList", boardList);
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-				
-				<!-- 다음 페이지(Next) 버튼 클릭 시 현재 페이지번호 + 1 값 전달 -->
-				<!-- 단, 현재 페이지번호가 전체 페이지 번호보다 작을 경우 + 1 값을 전달, 아니면 링크 동작 제거 -->
 				<c:choose>
 					<c:when test="${pageNum lt maxPage }">
 						<a href="notice.jsp?pageNum=${pageNum + 1 }">Next</a>
@@ -214,9 +194,10 @@ pageContext.setAttribute("boardList", boardList);
 						<a href="javascript:void(0)">Next</a>
 					</c:otherwise>
 				</c:choose>
+				<!-- 다음 페이지(Next) 버튼 클릭 시 현재 페이지번호 + 1 값 전달 -->
+				<!-- 단, 현재 페이지번호가 전체 페이지 번호보다 작을 경우 + 1 값을 전달, 아니면 링크 동작 제거 -->
 			</div>
 		</article>
-
 		<div class="clear"></div>
 		<!-- 푸터 들어가는곳 -->
 		<jsp:include page="../inc/bottom.jsp" />
