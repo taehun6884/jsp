@@ -1,6 +1,7 @@
 package action;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
+import svc.BoardWriteProService;
 import vo.ActionForward;
 import vo.BoardBean;
 
@@ -41,17 +43,34 @@ public class BoardWriteProAction implements Action {
 			bean.setBoard_pass(multi.getParameter("board_pass"));
 			bean.setBoard_subject(multi.getParameter("board_subject"));
 			bean.setBoard_content(multi.getParameter("board_content"));
+			bean.setBoard_file(multi.getParameter("board_file"));
+			bean.setBoard_real_file(multi.getParameter("board_real_file"));
 			
+			System.out.println(bean);
 //			System.out.println(bean);
-			
 //			String fileElement = multi.getFileNames().nextElement().toString();
+//			Enumeration e = multi.getFileNames();
+//			while(e.hasMoreElements()) {
+//			String fileElement = e.nextElement().toString();
+//			System.out.println("원본 파일명 : "+multi.getOriginalFileName(fileElement));
+//			System.out.println("원본 파일명 : "+multi.getFilesystemName(fileElement));
+//			}
+			BoardWriteProService service = new BoardWriteProService();
+			boolean isWriteSuccess = service.registBoard(bean);
 			
-			Enumeration e = multi.getFileNames();
-			while(e.hasMoreElements()) {
-			String fileElement = e.nextElement().toString();
-			System.out.println("원본 파일명 : "+multi.getOriginalFileName(fileElement));
-			System.out.println("원본 파일명 : "+multi.getFilesystemName(fileElement));
+			if(!isWriteSuccess) {
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				out.println("<script>");
+				out.println("alert('글쓰기 실패!')");
+				out.println("history.back()");
+				out.println("</script>");
+			}else {
+				forward = new ActionForward();
+				forward.setPath("BoardList.bo");
+				forward.setRedirect(true);
 			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

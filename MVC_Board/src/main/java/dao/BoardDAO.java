@@ -2,6 +2,8 @@ package dao;
 
 import java.sql.Connection;
 
+import vo.BoardBean;
+
 // 실제 비즈니스 로직을 수행하는 BoardDAO 클래스 정의
 // => 각 Service 클래스 인스턴스에서 BoardDAO 인스턴스에 접근 시 고유 데이터가 불필요하므로
 //    BoardDAO 인스턴스는 애플리케이션에서 단 하나만 생성하여 공유해도 된다!
@@ -31,6 +33,11 @@ public class BoardDAO {
 		this.con = con;
 	}
 	// ----------------------------------------------------------------------------------
+
+	public int insertBoard(BoardBean board) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 }

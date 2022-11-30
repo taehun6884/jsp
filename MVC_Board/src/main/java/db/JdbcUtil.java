@@ -54,6 +54,7 @@ public class JdbcUtil {
 			//    => 기본적으로 JDBC 사용 시 Auto Commit 기능이 동작되도록 설정되어 있음
 			//       (true : Auto Commit 설정, false : Auto Commit 해제)
 			con.setAutoCommit(false); // 자동 커밋 기능 해제
+			// => 별도로 commit, rollback 작업을 수행할 메서드 필요
 			
 			// 6. 현재 커넥션 정보 확인
 			BasicDataSource bds = (BasicDataSource)ds;
@@ -65,8 +66,19 @@ public class JdbcUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		// 데이터베이스 연결 객체가 저장된 Connection 타입 변수값 리턴
 		return con;
+	}
+	
+	// 데이터베이스 작업에 대한 Commit, Rollback 작업을 수행할 메서드 정의
+	// => 파라미터 : Connection 객체(con)
+	public static void commit(Connection con) {
+		try {
+			con.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void rollback(Connection con) {
