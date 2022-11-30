@@ -31,7 +31,7 @@ public class TestServlet_Dispatch extends HttpServlet {
 //		RequestDispatcher dispatcher = request.getRequestDispatcher("test6_dispatch_result.jsp");
 		
 		// webapp/test2_forwarding/test_dispatch_result.jsp 페이지로 포워딩 시
-		RequestDispatcher dispatcher = request.getRequestDispatcher("test2_forwarding/test_dispatch_result.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/test2_forwarding/test_dispatch_result.jsp");
 		
 		// 2. RequestDispatcher 객체의 forward() 메서드를 호출하여 포워딩 작업 수행
 		//    => 파라미터 : request, response 객체
