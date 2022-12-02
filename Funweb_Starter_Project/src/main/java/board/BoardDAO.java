@@ -105,7 +105,7 @@ public class BoardDAO {
 			// MySQL 의 COUNT() 함수 활용(SELECT COUNT(컬럼명 또는 *) FROM 테이블명)
 			// => 제목 검색 기능 추가
 			String sql = "SELECT COUNT(idx) FROM board "
-							+ "WHERE subject LIKE ?";
+							+ "WHERE board_subject LIKE ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, "%" + keyword + "%");
 			rs = pstmt.executeQuery();

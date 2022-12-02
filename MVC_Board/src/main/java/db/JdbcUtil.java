@@ -58,9 +58,9 @@ public class JdbcUtil {
 			
 			// 6. 현재 커넥션 정보 확인
 			BasicDataSource bds = (BasicDataSource)ds;
-			System.out.println("MaxTotal : " + bds.getMaxTotal()); // 최대 커넥션 수
-			System.out.println("Active : " + bds.getNumActive()); // 현재 사용 중인 커넥션 수
-			System.out.println("Idle : " + bds.getNumIdle()); // 유휴 상태 커넥션 수
+//			System.out.println("MaxTotal : " + bds.getMaxTotal()); // 최대 커넥션 수
+//			System.out.println("Active : " + bds.getNumActive()); // 현재 사용 중인 커넥션 수
+//			System.out.println("Idle : " + bds.getNumIdle()); // 유휴 상태 커넥션 수
 		} catch (NamingException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

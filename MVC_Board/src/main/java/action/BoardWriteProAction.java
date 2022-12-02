@@ -26,6 +26,9 @@ public class BoardWriteProAction implements Action {
 			String uploadPath = "upload"; // 업로드 가상 디렉토리(이클립스)
 			// 업로드 실제 디렉토리(톰캣) 얻어오기
 			String realPath = request.getServletContext().getRealPath(uploadPath);
+//			System.out.println(request.getServletContext());
+//			System.out.println(request.getRealPath(uploadPath));
+			
 			System.out.println("실제 업로드 경로 : " + realPath);
 			// D:\Shared\JSP\workspace_jsp5\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\MVC_Board\ upload
 			int fileSize = 1024 * 1024 * 10;

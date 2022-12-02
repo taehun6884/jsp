@@ -1,7 +1,13 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import db.JdbcUtil;
 import vo.BoardBean;
 
 // 실제 비즈니스 로직을 수행하는 BoardDAO 클래스 정의
@@ -33,10 +39,133 @@ public class BoardDAO {
 		this.con = con;
 	}
 	// ----------------------------------------------------------------------------------
-
+	
+	
 	public int insertBoard(BoardBean board) {
-		// TODO Auto-generated method stub
-		return 0;
+		System.out.println("BoardDAO - insertBoard()");
+		
+		int insertCount = 0;
+		
+		PreparedStatement pstmt = null,pstmt2=null;
+		ResultSet rs = null;
+		
+		// --------------------------------------------------------------------------------
+		// 새 글 번호 계산을 위해 기존 board 테이블의 모든 번호(idx) 중 가장 큰 번호 조회
+		// => 조회 결과 + 1 값을 새 글 번호로 지정하고, 조회 결과가 없으면 기본값 1 로 설정
+		// => MySQL 구문의 MAX() 함수 사용(SELECT MAX(컬럼명) FROM 테이블명)
+		try {
+			int board_num = 1; // 새 글 번호
+			
+			String sql = "SELECT MAX(board_num) FROM board";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) { // 조회 결과가 있을 경우(= 기존 게시물이 하나라도 존재할 경우)
+				// (만약, 게시물이 존재하지 않을 경우 DB 에서 NULL 로 표기, rs.next() 가 false)
+				board_num = rs.getInt(1) + 1; // 기존 게시물 번호 중 가장 큰 번호(= 조회 결과) + 1
+			}
+			System.out.println("새글 번호 "+board_num);
+			
+			sql = "INSERT INTO board VALUES(?,?,?,?,?,?,?,?,?,?,?,now())";
+			pstmt2 = con.prepareStatement(sql);
+			pstmt2.setInt(1, board_num);
+			pstmt2.setString(2, board.getBoard_name());
+			pstmt2.setString(3, board.getBoard_pass());
+			pstmt2.setString(4, board.getBoard_subject());
+			pstmt2.setString(5, board.getBoard_content());
+			pstmt2.setString(6, board.getBoard_file());
+			pstmt2.setString(7, board.getBoard_real_file());
+			pstmt2.setInt(8, board_num);
+			pstmt2.setInt(9,0);
+			pstmt2.setInt(10,0);
+			pstmt2.setInt(11,0);
+			insertCount = pstmt2.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("글조회 안됌!");
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+			JdbcUtil.close(pstmt2);
+		}
+		return insertCount;
+	}
+
+
+	public List<BoardBean> selectBoardList(String keyword, int startRow, int listLimit) {
+		System.out.println("select BoardList()");
+		List<BoardBean> boardlist = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			String sql = "SELECT * FROM board "
+					+ "WHERE board_subject LIKE ? "
+					+ "ORDER BY board_re_ref DESC, board_re_seq ASC "
+					+ "LIMIT ?,?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%" + keyword + "%");
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, listLimit);
+			rs = pstmt.executeQuery();
+			
+			boardlist = new ArrayList<BoardBean>();
+			while(rs.next()) {
+				BoardBean bean = new BoardBean();
+				bean.setBoard_num(rs.getInt(1));
+				bean.setBoard_name(rs.getString(2));
+				bean.setBoard_pass(rs.getString(3));
+				bean.setBoard_subject(rs.getString(4));
+				bean.setBoard_content(rs.getString(5));
+				bean.setBoard_file(rs.getString(6));
+				bean.setBoard_real_file(rs.getString(7));
+				bean.setBoard_re_ref(rs.getInt(8));
+				bean.setBoard_re_lev(rs.getInt(9));
+				bean.setBoard_re_seq(rs.getInt(10));
+				bean.setBoard_readcount(rs.getInt(11));
+				bean.setBoard_date(rs.getTimestamp(12));
+				boardlist.add(bean);
+			}
+		} catch (SQLException e) {
+			System.out.println("BoardDAO - selectBoardList()");
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+		
+		return boardlist;
+	}
+
+
+	public int selectListCount(String keyword) {
+		int listCount = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			String sql = "SELECT COUNT(*) FROM board "
+							+ "WHERE board_subject LIKE ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%" + keyword + "%");
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				listCount = rs.getInt(1);
+			}
+		
+		} catch (SQLException e) {
+			System.out.println("SQL 구문 오류! - selectListCount()");
+			e.printStackTrace();
+		} finally {
+			// 자원 반환
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+			JdbcUtil.close(con);
+		}
+		
+		
+		return listCount;
 	}
 	
 	

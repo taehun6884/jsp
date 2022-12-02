@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import action.BoardDetailAction;
 import action.BoardListAction;
 import action.BoardListAction_Backup;
 import action.BoardWriteProAction;
@@ -62,6 +63,11 @@ public class BoardFrontController extends HttpServlet {
 			// BoardListAction 의 execute() 메서드 호출
 			action = new BoardListAction();
 			forward = action.execute(request, response);
+		}else if(command.equals("/BoardDetail.bo")) {
+			System.out.println("글목록 작업!");
+			// BoardListAction 의 execute() 메서드 호출
+			action = new BoardDetailAction();
+			forward = action.execute(request, response);
 		}
 		
 		// ----------------------------------------------------------------------
@@ -79,7 +85,7 @@ public class BoardFrontController extends HttpServlet {
 				dispatcher.forward(request, response);
 			}
 		}
-		
+		System.out.println("doProcess() 메서드 끝!");
 	} // doProcess() 메서드 끝
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
