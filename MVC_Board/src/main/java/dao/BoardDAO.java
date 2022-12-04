@@ -161,11 +161,72 @@ public class BoardDAO {
 			// 자원 반환
 			JdbcUtil.close(rs);
 			JdbcUtil.close(pstmt);
-			JdbcUtil.close(con);
 		}
 		
 		
 		return listCount;
+	}
+
+
+	public BoardBean getBoard(int board_num) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		BoardBean board = null;
+		try {
+			// board 테이블에서 글번호(idx) 가 일치(조건) 하는 레코드(전체 컬럼 데이터) 조회
+			// => 조회 결과가 존재할 경우 BoardDTO 객체 생성 후 데이터 저장
+			String sql = "SELECT * FROM board WHERE board_num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			rs = pstmt.executeQuery(); // SQL 구문 실행
+			
+			// 조회결과 존재 여부 판별
+			if(rs.next()) { // 조회 결과 존재할 경우
+				board = new BoardBean(); // BoardDTO 객체 생성
+				// 데이터 저장
+				board.setBoard_num(rs.getInt("board_num"));
+				board.setBoard_name(rs.getString("board_name"));
+				board.setBoard_pass(rs.getString("board_pass"));
+				board.setBoard_subject(rs.getString("board_subject"));
+				board.setBoard_content(rs.getString("board_content"));
+				board.setBoard_date(rs.getTimestamp("board_date"));
+				board.setBoard_readcount(rs.getInt("board_readcount"));
+				board.setBoard_re_lev(rs.getInt("board_re_lev"));
+				board.setBoard_re_ref(rs.getInt("board_re_ref"));
+				board.setBoard_re_seq(rs.getInt("board_re_seq"));
+				board.setBoard_file(rs.getNString("board_file"));
+				board.setBoard_real_file(rs.getString("board_real_file"));
+			
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 구문 오류! - selectBoard()");
+			e.printStackTrace();
+		} finally {
+			// 자원 반환
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+		return board;
+	}
+
+
+	public void updateReadcount(int board_num) {
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "UPDATE board "
+							+ "SET board_readcount=board_readcount+1 "
+							+ "WHERE board_num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 구문 오류! - updateReadcount()");
+			e.printStackTrace();
+		} finally {
+			// 자원 반환
+			JdbcUtil.close(pstmt);
+		}
+	
 	}
 	
 	
