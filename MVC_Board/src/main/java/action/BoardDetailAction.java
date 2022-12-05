@@ -18,6 +18,7 @@ public class BoardDetailAction implements Action{
 		BoardDetailService service = new BoardDetailService();
 		
 		BoardBean vo = service.getBoard(board_num);
+		System.out.println(vo);
 		request.setAttribute("board", vo);
 		
 		if(vo == null) {
@@ -29,5 +30,4 @@ public class BoardDetailAction implements Action{
 		}
 		return forward;
 	}
-
 }

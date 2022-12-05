@@ -13,8 +13,11 @@ import action.Action;
 import action.BoardDetailAction;
 import action.BoardListAction;
 import action.BoardListAction_Backup;
+import action.BoardModifyFormAction;
+import action.BoardModifyProAction;
 import action.BoardWriteProAction;
 import action.BoardWriteProAction_Backup;
+import action.BoradDeleteProAction;
 import vo.ActionForward;
 
 @WebServlet("*.bo") // xxx.bo 로 끝나는 모든 주소 매핑
@@ -67,6 +70,29 @@ public class BoardFrontController extends HttpServlet {
 			System.out.println("글목록 작업!");
 			// BoardListAction 의 execute() 메서드 호출
 			action = new BoardDetailAction();
+			forward = action.execute(request, response);
+		}else if(command.equals("/BoardDeleteForm.bo")) {
+			System.out.println("글삭제 작업!");
+			forward = new ActionForward();
+			forward.setPath("board/qna_board_delete.jsp");
+			forward.setRedirect(false);
+		}else if(command.equals("/BoardDeletePro.bo")) {
+			System.out.println("글삭제 작업!");
+			// BoardListAction 의 execute() 메서드 호출
+			action = new BoradDeleteProAction();
+			forward = action.execute(request, response);
+		}else if(command.equals("/BoardDeleteForm.bo")) {
+			System.out.println("글삭제 작업!");
+			forward = new ActionForward();
+			forward.setPath("board/qna_board_delete.jsp");
+			forward.setRedirect(false);
+		}else if(command.equals("/BoardModifyForm.bo")) {
+			System.out.println("글수정 작업!");
+			action = new BoardModifyFormAction();
+			forward = action.execute(request, response);
+		}else if(command.equals("/BoardModifyPro.bo")) {
+			System.out.println("글수정 작업!");
+			action = new BoardModifyProAction();
 			forward = action.execute(request, response);
 		}
 		

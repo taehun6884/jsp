@@ -81,7 +81,7 @@ public class BoardDAO {
 			pstmt2.setInt(11,0);
 			insertCount = pstmt2.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("글조회 안됌!");
+			System.out.println("insertBoard() 메서드 오류!");
 			e.printStackTrace();
 		}finally {
 			JdbcUtil.close(rs);
@@ -186,7 +186,7 @@ public class BoardDAO {
 				// 데이터 저장
 				board.setBoard_num(rs.getInt("board_num"));
 				board.setBoard_name(rs.getString("board_name"));
-				board.setBoard_pass(rs.getString("board_pass"));
+//				board.setBoard_pass(rs.getString("board_pass"));
 				board.setBoard_subject(rs.getString("board_subject"));
 				board.setBoard_content(rs.getString("board_content"));
 				board.setBoard_date(rs.getTimestamp("board_date"));
@@ -199,7 +199,7 @@ public class BoardDAO {
 			
 			}
 		} catch (SQLException e) {
-			System.out.println("SQL 구문 오류! - selectBoard()");
+			System.out.println("SQL 구문 오류! - getBoard()");
 			e.printStackTrace();
 		} finally {
 			// 자원 반환
@@ -210,7 +210,8 @@ public class BoardDAO {
 	}
 
 
-	public void updateReadcount(int board_num) {
+	public int updateReadcount(int board_num) {
+		int updateCount = 0;
 		PreparedStatement pstmt = null;
 		try {
 			String sql = "UPDATE board "
@@ -218,7 +219,7 @@ public class BoardDAO {
 							+ "WHERE board_num=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, board_num);
-			pstmt.executeUpdate();
+			updateCount = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("SQL 구문 오류! - updateReadcount()");
 			e.printStackTrace();
@@ -226,10 +227,63 @@ public class BoardDAO {
 			// 자원 반환
 			JdbcUtil.close(pstmt);
 		}
-	
+		return updateCount;
 	}
-	
-	
+
+
+	public boolean removeBoard(String board_pass, int board_num) {
+		boolean result = false;
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "DELETE FROM board WHERE board_num=? AND board_pass=? ";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			pstmt.setString(2, board_pass);
+			int deleteCount = pstmt.executeUpdate();
+			
+			if(deleteCount > 0 ) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result; 
+	}
+
+	public boolean isBoardWriter(int board_num, String board_pass) {
+	      boolean isBoardWriter = false;
+	      
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      
+	      try {
+	         // board 테이블에서 글번호(board)가 일치하는 1개 레코드 조회
+	         String sql = "SELECT * FROM board "
+	                        + "WHERE board_num=? "
+	                        +       "AND board_pass=?";
+	         pstmt = con.prepareStatement(sql);
+	         pstmt.setInt(1, board_num);
+	         pstmt.setString(2, board_pass);
+	         rs = pstmt.executeQuery();
+	         // 조회 결과가 있을 경우
+	         if(rs.next()) {
+	            // isBoardWriter 값을 true 로 변경
+	            isBoardWriter = true;
+	         }
+	         
+	      } catch (SQLException e) {
+	         System.out.println("BoardDAO - isBoardWriter()");
+	         e.printStackTrace();
+	      } finally {
+	         // DB 자원 반환
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	      
+	      return isBoardWriter;
+	   }
+
 }
 
 

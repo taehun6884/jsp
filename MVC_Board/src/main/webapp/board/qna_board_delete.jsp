@@ -30,11 +30,13 @@
 	<!-- 게시판 글 삭제 -->
 	<h2>게시판 글 삭제</h2>
 	<section id="passForm">
-		<form action="" name="deleteForm" method="post">
+		<form action="BoardDeletePro.bo" name="deleteForm" method="post">
 			<table>
 				<tr>
 					<td><label>글 비밀번호</label></td>
 					<td><input type="password" name="board_pass" required="required"></td>
+					<td><input type="hidden" name="board_num" value="${param.board_num }"></td>
+					<td><input type="hidden" name="pageNum" value="${param.pageNum }"></td>
 				</tr>
 				<tr>
 					<td colspan="2">

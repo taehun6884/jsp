@@ -20,31 +20,18 @@ public class BoardDetailService {
 		dao.setConnection(con);
 		
 		vo = dao.getBoard(board_num);
-		
+		System.out.println(vo);
 		
 		if(vo != null ) {
-			dao.updateReadcount(board_num);
-			JdbcUtil.commit(con);
-		}else {
-			JdbcUtil.rollback(con);
+			int updateCount = dao.updateReadcount(board_num);
+			
+			if(updateCount > 0) {
+				JdbcUtil.commit(con);
+				
+				vo.setBoard_readcount(vo.getBoard_readcount()+1);
+			}
 		}
 		JdbcUtil.close(con);
 		return vo;
 	}
-
-//	public void updateReadcount(int board_num) {
-//		Connection con = null;
-//		
-//		con = JdbcUtil.getConnection();
-//		
-//		BoardDAO dao = BoardDAO.getInstance();
-//		
-//		dao.setConnection(con);
-//		
-//		dao.updateReadcount(board_num);
-//		
-//		JdbcUtil.close(con);
-//		
-//	}
-
 }
