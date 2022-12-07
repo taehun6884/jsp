@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import action.BoardDeleteProAction;
 import action.BoardDetailAction;
 import action.BoardListAction;
-import action.BoardListAction_Backup;
 import action.BoardModifyFormAction;
 import action.BoardModifyProAction;
+import action.BoardReplyFormAction;
+import action.BoardReplyProAction;
 import action.BoardWriteProAction;
-import action.BoardWriteProAction_Backup;
-import action.BoradDeleteProAction;
 import vo.ActionForward;
 
 @WebServlet("*.bo") // xxx.bo 로 끝나는 모든 주소 매핑
@@ -62,39 +62,47 @@ public class BoardFrontController extends HttpServlet {
 			// 2. BoardWriteProAction 인스턴스의 execute() 메서드 호출
 			forward = action.execute(request, response);
 		} else if(command.equals("/BoardList.bo")) {
-			System.out.println("글목록 작업!");
+//			System.out.println("글목록 작업!");
+			// 글목록 비즈니스 작업 요청
 			// BoardListAction 의 execute() 메서드 호출
 			action = new BoardListAction();
 			forward = action.execute(request, response);
-		}else if(command.equals("/BoardDetail.bo")) {
-			System.out.println("글목록 작업!");
-			// BoardListAction 의 execute() 메서드 호출
+		} else if(command.equals("/BoardDetail.bo")) {
+			// 글 상세정보 조회 비즈니스 작업 요청
+			// BoardDetailAction 의 execute() 메서드 호출
 			action = new BoardDetailAction();
 			forward = action.execute(request, response);
-		}else if(command.equals("/BoardDeleteForm.bo")) {
-			System.out.println("글삭제 작업!");
+		} else if(command.equals("/BoardDeleteForm.bo")) {
+			// 글 삭제 폼 요청
 			forward = new ActionForward();
 			forward.setPath("board/qna_board_delete.jsp");
-			forward.setRedirect(false);
-		}else if(command.equals("/BoardDeletePro.bo")) {
-			System.out.println("글삭제 작업!");
-			// BoardListAction 의 execute() 메서드 호출
-			action = new BoradDeleteProAction();
+			forward.setRedirect(false); // 생략도 가능
+		} else if(command.equals("/BoardDeletePro.bo")) {
+			// 글 삭제 비즈니스 작업 요청
+			// BoardDeleteProAction 의 execute() 메서드 호출
+			action = new BoardDeleteProAction();
 			forward = action.execute(request, response);
-		}else if(command.equals("/BoardDeleteForm.bo")) {
-			System.out.println("글삭제 작업!");
-			forward = new ActionForward();
-			forward.setPath("board/qna_board_delete.jsp");
-			forward.setRedirect(false);
-		}else if(command.equals("/BoardModifyForm.bo")) {
-			System.out.println("글수정 작업!");
+		} else if(command.equals("/BoardModifyForm.bo")) {
+			// 글 수정 폼 비즈니스 작업 요청
+			// BoardModifyFormAction 의 execute() 메서드 호출
 			action = new BoardModifyFormAction();
 			forward = action.execute(request, response);
-		}else if(command.equals("/BoardModifyPro.bo")) {
-			System.out.println("글수정 작업!");
+		} else if(command.equals("/BoardModifyPro.bo")) {
+			// 글 수정 비즈니스 작업 요청
+			// BoardModifyProAction 의 execute() 메서드 호출
 			action = new BoardModifyProAction();
 			forward = action.execute(request, response);
-		}
+		} else if(command.equals("/BoardReplyForm.bo")) {
+			// 답글 작성 폼 비즈니스 작업 요청
+			// BoardReplyFormAction 의 execute() 메서드 호출
+			action = new BoardReplyFormAction();
+			forward = action.execute(request, response);
+		} else if(command.equals("/BoardReplyPro.bo")) {
+			// 답글 작성 비즈니스 작업 요청
+			// BoardReplyProAction 의 execute() 메서드 호출
+			action = new BoardReplyProAction();
+			forward = action.execute(request, response);
+		} 
 		
 		// ----------------------------------------------------------------------
 		// ActionForward 객체 내용에 따라 각각 다른 방식의 포워딩 작업 수행(공통)
@@ -111,8 +119,9 @@ public class BoardFrontController extends HttpServlet {
 				dispatcher.forward(request, response);
 			}
 		}
-		System.out.println("doProcess() 메서드 끝!");
-	} // doProcess() 메서드 끝
+		
+//		System.out.println("doProcess() 메서드 끝");
+	} // doProcess() 메서드 끝(응답데이터 전송)
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doProcess(request, response);

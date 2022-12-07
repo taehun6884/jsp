@@ -1,5 +1,6 @@
 package action;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
@@ -26,9 +27,6 @@ public class BoardWriteProAction implements Action {
 			String uploadPath = "upload"; // 업로드 가상 디렉토리(이클립스)
 			// 업로드 실제 디렉토리(톰캣) 얻어오기
 			String realPath = request.getServletContext().getRealPath(uploadPath);
-//			System.out.println(request.getServletContext());
-//			System.out.println(request.getRealPath(uploadPath));
-			
 			System.out.println("실제 업로드 경로 : " + realPath);
 			// D:\Shared\JSP\workspace_jsp5\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\MVC_Board\ upload
 			int fileSize = 1024 * 1024 * 10;
@@ -88,6 +86,15 @@ public class BoardWriteProAction implements Action {
 			
 			// 글쓰기 요청 처리 결과 판별
 			if(!isWriteSuccess) { // 실패 시
+				// 업로드 된 실제 파일 삭제
+				File f = new File(realPath, board.getBoard_real_file());
+				
+				// 해당 디렉토리 및 파일 존재 여부 판별
+				if(f.exists()) { // 존재할 경우
+					// File 객체의 delete() 메서드를 호출하여 해당 파일 삭제
+					f.delete();
+				}
+				
 				// 자바스크립트 사용하여 "글쓰기 실패!" 출력 후 이전페이지로 돌아가기
 				// => 웹브라우저로 HTML 태그 등을 내보내기(출력) 위한 작업 수행
 				//    (자바 클래스 내에서 출력스트림을 활용하여 HTML 태그 출력해야함)
@@ -122,7 +129,7 @@ public class BoardWriteProAction implements Action {
 			e.printStackTrace();
 		}
 		
-		return forward;
+		return forward; // BoardFrontController 로 리턴
 	}
 
 }

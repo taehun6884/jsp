@@ -102,7 +102,7 @@
 		<input type="text" name="keyword">
 		<input type="submit" value="검색">
 		&nbsp;&nbsp;
-		<input type="button" value="글쓰기" onclick="location.href=loaction.href='BoardWriteForm.bo'" />
+		<input type="button" value="글쓰기" onclick="location.href='BoardWriteForm.bo'" />
 	</section>
 	<section id="pageList">
 		<!-- 
