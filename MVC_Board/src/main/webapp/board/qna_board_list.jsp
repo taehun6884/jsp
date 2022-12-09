@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>MVC 게시판</title>
+<link href="css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 	#listForm {
 		width: 1024px;
@@ -63,6 +64,7 @@
 </style>
 </head>
 <body>
+	<jsp:include page="/inc/top.jsp"/>
 	<!-- 게시판 리스트 -->
 	<section id="listForm">
 	<h2>게시판 글 목록</h2>
@@ -74,7 +76,7 @@
 			<td width="150px">날짜</td>
 			<td width="100px">조회수</td>
 		</tr>
-		<c:forEach var="board" items="${boardlist }">
+		<c:forEach var="board" items="${boardList }">
 			<tr>
 			<td>${board.board_num }</td>
 			<c:choose>
@@ -86,6 +88,12 @@
 			</c:otherwise>
 			</c:choose>
 			<td id="subject">
+			<c:if test="${board.board_re_lev gt 0 }">
+				<c:forEach var="i" begin="1" end="${board.board_re_lev }">
+					&nbsp;&nbsp;
+				</c:forEach>
+				<img src="images/re.gif" >
+			</c:if>
 			<a href="BoardDetail.bo?board_num=${board.board_num }&pageNum=${pageNum}">
 			${board.board_subject }</a>
 			</td>
@@ -142,6 +150,7 @@
 			</c:otherwise>
 		</c:choose>
 	</section>
+	
 </body>
 </html>
 
