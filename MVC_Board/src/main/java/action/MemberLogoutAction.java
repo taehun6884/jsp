@@ -16,7 +16,7 @@ public class MemberLogoutAction implements Action {
 		session.invalidate();
 		
 		forward = new ActionForward();
-		forward.setPath("index.jsp");
+		forward.setPath("./");
 		forward.setRedirect(true);
 		return forward;
 	}

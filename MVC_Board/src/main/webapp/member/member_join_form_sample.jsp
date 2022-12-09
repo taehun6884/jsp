@@ -10,7 +10,6 @@
 <script type="text/javascript">
 	function emailCheck(value){
 		document.fr.email2.value = value;
-		
 		for(options of document.fr.selectDomain){
 			if(options.selected && value == ""){
 				options.disabled = true;
@@ -18,7 +17,6 @@
 				options.disabled = false;
 			}
 		}
-		
 	}
 </script>
 </head>
@@ -28,7 +26,7 @@
 		<jsp:include page="/inc/top.jsp"></jsp:include>
 	</header>
 	<h1>회원 가입</h1>
-	<form action="MemberJoinPro.me" method="post">
+	<form action="MemberJoinPro.me" method="post" name="fr">
 		<table border="1">
 			<tr>
 				<td>이름</td>

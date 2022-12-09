@@ -21,7 +21,6 @@
 		<tr>
 			<th>아이디</th><th>이름</th><th>E-Mail</th><th>성별</th><th>가입일</th>
 		</tr>
-		
 		<c:forEach var="member" items="${memberlist}">
 		<tr>
 			<td>${member.id }</td>
@@ -36,6 +35,5 @@
 		</c:forEach>
 		<tr><td colspan="6" align="right"><input type="button" value="메인 페이지로 이동" name="" onclick="location.href='../main/main.jsp'">
 	</table>
-
 </body>
 </html>
