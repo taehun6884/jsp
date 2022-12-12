@@ -94,8 +94,16 @@
 				</c:forEach>
 				<img src="images/re.gif" >
 			</c:if>
-			<a href="BoardDetail.bo?board_num=${board.board_num }&pageNum=${pageNum}">
-			${board.board_subject }</a>
+			
+			<c:choose>
+				<c:when test="${not empty sessionScope.sId }">
+					<a href="BoardDetail.bo?board_num=${board.board_num }&pageNum=${pageNum}">
+					${board.board_subject }</a>
+				</c:when>
+				<c:otherwise>
+				${board.board_subject }
+				</c:otherwise>
+			</c:choose>
 			</td>
 			<td>${board.board_name }</td>
 			<td>

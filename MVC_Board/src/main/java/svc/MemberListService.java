@@ -20,9 +20,8 @@ public class MemberListService {
 		
 		memberlist = dao.selectMemberList();
 		
-		
+		JdbcUtil.close(con);
 		
 		return memberlist;
 	}
-
 }

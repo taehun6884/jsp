@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import db.JdbcUtil;
 import vo.MemberBean;
 
 public class MemberDAO {
@@ -74,7 +75,7 @@ private MemberDAO() {}
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		String sql = "select * from member";
+		String sql = "SELECT * FROM member ORDER BY id ASC";
 		
 		try {
 			pstmt = con.prepareStatement(sql);
@@ -91,12 +92,12 @@ private MemberDAO() {}
 				vo.setDate(rs.getDate(6));
 				memberlist.add(vo);
 			}
-		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
 		}
-		
 		return memberlist;
 	}
 }

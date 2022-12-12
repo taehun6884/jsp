@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import encrypt.MyMessageDigest;
 import svc.MemberInsertProService;
 import vo.ActionForward;
 import vo.MemberBean;
@@ -26,6 +27,12 @@ public class MemberInsertProAction implements Action {
 		vo.setGender(request.getParameter("gender"));
 		
 		System.out.println(vo);
+		
+		MyMessageDigest md = new MyMessageDigest("SHA-256");
+		md.hashing(request.getParameter("passwd"));
+		
+		
+		
 		MemberInsertProService service = new MemberInsertProService();
 		
 		boolean isInsertSucess = service.InsertMember(vo);
@@ -48,7 +55,6 @@ public class MemberInsertProAction implements Action {
 			forward.setPath("member/member_join_result_sample.jsp");
 			forward.setRedirect(false);
 		}
-		
 		return forward;
 	}
 

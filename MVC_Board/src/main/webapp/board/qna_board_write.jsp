@@ -73,8 +73,6 @@
 					<!-- 파일 첨부 형식은 input 태그의 type="file" 속성 사용 -->
 					<td class="td_right">
 					<input type="file" name="board_file" />
-					<input type="file" name="board_file2"/>
-					<input type="file" name="board_file3"/>
 					
 					</td>
 				</tr>

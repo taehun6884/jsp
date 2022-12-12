@@ -19,6 +19,7 @@ public class LoginMemberService {
 		isRightUser = dao.isRightUser(id,pass);
 		
 		JdbcUtil.close(con);
+		
 		return isRightUser;
 	}
 	

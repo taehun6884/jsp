@@ -39,7 +39,7 @@ public class MemberLoginMemberProAction implements Action {
 		}else {
 			HttpSession session = request.getSession();
 			session.setAttribute("sId", id);
-			
+
 			forward = new ActionForward();
 			forward.setPath("./");
 			forward.setRedirect(true);
