@@ -72,8 +72,7 @@
 					<td class="td_left"><label for="board_file">파일 첨부</label></td>
 					<!-- 파일 첨부 형식은 input 태그의 type="file" 속성 사용 -->
 					<td class="td_right">
-					<input type="file" name="board_file" />
-					
+					  <input type="file" name="board_file" id="image" accept="image/*" onchange="setThumbnail(event);"/>
 					</td>
 				</tr>
 			</table>

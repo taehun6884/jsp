@@ -1,10 +1,18 @@
 package action;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.renderable.ParameterBlock;
+import java.awt.image.renderable.RenderableImage;
+import java.awt.image.renderable.RenderableImageOp;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 
+import javax.imageio.ImageIO;
+import javax.media.jai.JAI;
+import javax.media.jai.RenderedOp;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,7 +32,7 @@ public class BoardWriteProAction implements Action {
 		ActionForward forward = null;
 		
 		try {
-			String uploadPath = "upload"; // 업로드 가상 디렉토리(이클립스)
+			String uploadPath = "/upload"; // 업로드 가상 디렉토리(이클립스)
 			// 업로드 실제 디렉토리(톰캣) 얻어오기
 			String realPath = request.getServletContext().getRealPath(uploadPath);
 			System.out.println("실제 업로드 경로 : " + realPath);
@@ -118,6 +126,18 @@ public class BoardWriteProAction implements Action {
 				out.println("</script>");
 				// ActionForward 객체 생성하지 않음!! => null 값 전달
 			} else { // 성공 시
+//				ParameterBlock pb = new ParameterBlock();
+//				pb.add(realPath + "/" + board.getBoard_real_file());
+//				
+//				RenderedOp rop = JAI.create("fileload", pb);
+//				
+//				BufferedImage bi  = rop.getAsBufferedImage();
+//				BufferedImage thumb = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+//				Graphics2D g = thumb.createGraphics();
+//				g.drawImage(bi,0, 0, 100, 100,null);
+//				File file = new File(realPath+"/"+board.getBoard_real_file());
+//				ImageIO.write(thumb,"jpg", file);
+				
 				// 포워딩 정보 저장을 위한 ActionForward 객체 생성
 				// 포워딩 경로 : BoardList.bo, 포워딩 방식 : Redirect
 				forward = new ActionForward();
