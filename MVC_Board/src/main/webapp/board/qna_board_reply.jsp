@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>MVC 게시판</title>
+<link href="css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 	#replyForm {
 		width: 500px;
@@ -60,7 +61,7 @@
 				</tr>
 				<tr>
 					<td class="td_left"><label for="board_subject">제목</label></td>
-					<td class="td_right"><input type="text" name="board_subject" value="${board.board_subject }"></td>
+					<td class="td_right"><input type="text" name="board_subject" value="Re:${board.board_subject }"></td>
 				</tr>
 				<tr>
 					<td class="td_left"><label for="board_content">내용</label></td>

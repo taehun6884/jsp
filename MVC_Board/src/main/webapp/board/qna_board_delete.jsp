@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>MVC 게시판</title>
+<link href="css/default.css" rel="stylesheet" type="text/css">
 <style>
 	#passForm {
 		width: 300px;
@@ -27,6 +28,7 @@
 </style>
 </head>
 <body>
+	<jsp:include page="/inc/top.jsp"/>
 	<!-- 게시판 글 삭제 -->
 	<h2>게시판 글 삭제</h2>
 	<section id="passForm">

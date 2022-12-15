@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-          
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>MVC 게시판</title>
+<title>Insert title here</title>
 <link href="css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 	#listForm {
@@ -64,62 +63,32 @@
 </style>
 </head>
 <body>
-	<jsp:include page="/inc/top.jsp"/>
-	<!-- 게시판 리스트 -->
-	<section id="listForm">
-	<h2>게시판 글 목록</h2>
-	<table>
+<%-- 	<%if(sId == null || !sId.equals("admin")) { %> --%>
+<!-- 		<script> -->
+<!--  			alert("잘못된 접근입니다!"); -->
+<!--  			locaion.href = "../main/main.jsp"; -->
+<!-- 		</script> -->
+<%-- 	<%} %> --%>
+	<h2>admin_main.jsp - 관리자 페이지</h2>
+	<table border="1">
 		<tr id="tr_top">
-			<td width="100px">번호</td>
-			<td>제목</td>
-			<td width="150px">작성자</td>
-			<td width="150px">날짜</td>
-			<td width="100px">조회수</td>
+			<th>아이디</th><th>이름</th><th>E-Mail</th><th>성별</th><th>가입일</th><th>상세정보</th>
 		</tr>
-		<c:forEach var="board" items="${boardList }">
-			<tr>
-			<td>${board.board_num }</td>
-			<c:choose>
-			<c:when test="${empty param.pageNum }">
-				<c:set var="pageNum" value="1"/>
-			</c:when>
-			<c:otherwise>
-				<c:set var="pageNum" value="${param.pageNum }"/>				
-			</c:otherwise>
-			</c:choose>
-			<td id="subject">
-			<c:if test="${board.board_re_lev gt 0 }">
-				<c:forEach var="i" begin="1" end="${board.board_re_lev }">
-					&nbsp;&nbsp;
-				</c:forEach>
-				<img src="images/re.gif" >
-			</c:if>
-			
-			<c:choose>
-				<c:when test="${not empty sessionScope.sId }">
-					<a href="BoardDetail.bo?board_num=${board.board_num }&pageNum=${pageNum}">
-					${board.board_subject }</a>
-				</c:when>
-				<c:otherwise>
-				${board.board_subject }
-				</c:otherwise>
-			</c:choose>
-			</td>
-			<td>${board.board_name }</td>
+		<c:forEach var="member" items="${memberlist}">
+		<tr >
+			<td>${member.id }</td>
+			<td>${member.name }</td>
+			<td>${member.email }</td>
+			<td>${member.gender }</td>
+			<td>${member.date }</td>
 			<td>
-			<fmt:formatDate value="${board.board_date }" pattern="yyyy-MM-dd HH:mm"/>
+				<input type="button" value="상세조회" name="info_detail" onclick="location.href='../member/member_info.jsp?id='">
 			</td>
-			<td>${board.board_readcount }</td>
-			</tr>
+		</tr>
 		</c:forEach>
+		<tr><td colspan="6" align="right"><input type="button" value="메인 페이지로 이동" name="" onclick="location.href='../main/main.jsp'">
 	</table>
-	</section>
-	<section id="buttonArea">
-		<input type="text" name="keyword">
-		<input type="submit" value="검색">
-		&nbsp;&nbsp;
-		<input type="button" value="글쓰기" onclick="location.href='BoardWriteForm.bo'" />
-	</section>
+	
 	<section id="pageList">
 		<!-- 
 		현재 페이지 번호(pageNum)가 1보다 클 경우에만 [이전] 링크 동작
@@ -158,19 +127,5 @@
 			</c:otherwise>
 		</c:choose>
 	</section>
-	
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-

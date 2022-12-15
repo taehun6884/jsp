@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>MVC 게시판</title>
+<link href="css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 	#modifyForm {
 		width: 500px;
@@ -39,6 +40,7 @@
 </style>
 </head>
 <body>
+	<jsp:include page="/inc/top.jsp"/>
 	<!-- 게시판 글 수정 -->
 	<section id="modifyForm">
 		<h1>게시판 글 수정</h1>

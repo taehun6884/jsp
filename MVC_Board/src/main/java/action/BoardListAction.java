@@ -59,7 +59,7 @@ public class BoardListAction implements Action {
 		
 		// 3. 전체 페이지 목록 수 계산
 		int maxPage = listCount / listLimit 
-						+ (listCount % listLimit == 0 ? 0 : 1); 
+						+ (listCount % listLimit == 0 ? 0 : 1);
 		
 		// 4. 시작 페이지 번호 계산
 		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
