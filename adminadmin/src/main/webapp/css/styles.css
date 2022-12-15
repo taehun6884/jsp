@@ -466,6 +466,8 @@ legend + * {
   -webkit-appearance: button;
 }
 
+
+
 output {
   display: inline-block;
 }
@@ -4452,7 +4454,6 @@ textarea.form-control-lg {
   padding: 0;
   overflow-y: visible;
 }
-
 .navbar-light .navbar-brand {
   color: rgba(0, 0, 0, 0.9);
 }
@@ -11395,7 +11396,11 @@ body {
   padding-left: 225px;
   top: 56px;
 }
-
+.logo{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
 #layoutError {
   display: flex;
   flex-direction: column;
