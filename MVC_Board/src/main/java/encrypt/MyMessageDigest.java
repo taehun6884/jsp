@@ -41,8 +41,9 @@ public class MyMessageDigest {
 			
 			// for문을 사용하여 암호문 배열 크기만큼 반복
 			for(int i = 0; i < digestResult.length; i++) {
-				
+				strCipherText += Integer.toHexString(digestResult[i] & 0xff).toUpperCase();
 			}
+			System.out.println(strCipherText);
 			
 		} catch (NoSuchAlgorithmException e) {
 			System.out.println(hashAlgorithm + " 알고리즘이 존재하지 않습니다!");

@@ -65,6 +65,9 @@ private MemberDAO() {}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
 		}
 		
 		return isRightUser;

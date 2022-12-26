@@ -21,7 +21,7 @@ public class MemberInsertProAction implements Action {
 		
 		MemberBean vo = new MemberBean();
 		vo.setId(request.getParameter("id"));
-		vo.setPasswd(request.getParameter("passwd"));
+//		vo.setPasswd(request.getParameter("passwd"));
 		vo.setName(request.getParameter("name"));
 		vo.setEmail(request.getParameter("email1")+"@"+request.getParameter("email2"));
 		vo.setGender(request.getParameter("gender"));
@@ -29,8 +29,8 @@ public class MemberInsertProAction implements Action {
 		System.out.println(vo);
 		
 		MyMessageDigest md = new MyMessageDigest("SHA-256");
-		md.hashing(request.getParameter("passwd"));
-		
+	
+		vo.setPasswd(md.hashing(request.getParameter("passwd")));
 		
 		
 		MemberInsertProService service = new MemberInsertProService();

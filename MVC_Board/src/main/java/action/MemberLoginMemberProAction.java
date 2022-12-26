@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import encrypt.MyMessageDigest;
 import svc.LoginMemberService;
 import vo.ActionForward;
 
@@ -17,12 +18,20 @@ public class MemberLoginMemberProAction implements Action {
 		ActionForward forward = null;
 		
 		String id = request.getParameter("id");
-		String pass = request.getParameter("passwd");
+//		String pass = request.getParameter("passwd");
+		
+	
+		
+		MyMessageDigest md = new MyMessageDigest("SHA-256");
+		String pass = md.hashing(request.getParameter("passwd"));
 		
 		System.out.println(id+","+pass);
 		
 		LoginMemberService service = new LoginMemberService();
 		int isRightUser = service.isRightUser(id,pass);
+		
+		
+		
 		
 		if(isRightUser == 0) {
 			response.setContentType("text/html; charset=UTF-8");

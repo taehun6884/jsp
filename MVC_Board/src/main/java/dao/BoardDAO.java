@@ -259,7 +259,7 @@ public class BoardDAO {
 								+ "WHERE board_num=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, board_num);
-			 = pstmt.executeUpdate();
+			searchcount = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("BoardDAO - updateReadcount()");
 			e.printStackTrace();
