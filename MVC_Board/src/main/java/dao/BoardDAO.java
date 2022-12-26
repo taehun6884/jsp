@@ -183,7 +183,6 @@ public class BoardDAO {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, "%" + keyword + "%");
 			rs = pstmt.executeQuery();
-			
 			// 조회 결과가 있을 경우 listCount 변수에 저장
 			if(rs.next()) {
 				listCount = rs.getInt(1);
@@ -249,7 +248,7 @@ public class BoardDAO {
 	
 	// 조회수 증가
 	public int updateReadcount(int board_num) {
-		int updateCount = 0;
+		int searchcount = 0;
 		
 		PreparedStatement pstmt = null;
 		
@@ -260,7 +259,7 @@ public class BoardDAO {
 								+ "WHERE board_num=?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, board_num);
-			updateCount = pstmt.executeUpdate();
+			 = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("BoardDAO - updateReadcount()");
 			e.printStackTrace();
@@ -269,8 +268,37 @@ public class BoardDAO {
 			JdbcUtil.close(pstmt);
 		}
 		
-		return updateCount;
+		return searchcount;
 	}
+	public int searchcount(String keyword1,String keyword2) {
+		int searchcount = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		try {
+			// 글번호가 일치하는 레코드의 조회수(readcount) 1만큼 증가
+			String sql = "UPDATE board "
+								+ "SET search_count=search_count+1 "
+								+ "WHERE product_brand=? OR product_name=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, keyword1);
+			pstmt.setString(2, keyword2);
+			searchcount = pstmt.executeUpdate();
+			
+			sql = "select   from search order by search_count desc";
+		
+		} catch (SQLException e) {
+			System.out.println("BoardDAO - updateReadcount()");
+			e.printStackTrace();
+		} finally {
+			// DB 자원 반환
+			JdbcUtil.close(pstmt);
+		}
+		
+		return searchcount;
+	}
+	
+	
 	
 	// 패스워드 일치 여부 확인
 	public boolean isBoardWriter(int board_num, String board_pass) {
@@ -332,7 +360,7 @@ public class BoardDAO {
 	
 	// 글 수정
 	public int updateBoard(BoardBean board) {
-		int updateCount = 0;
+		int searchcount = 0;
 		
 		PreparedStatement pstmt = null;
 		
@@ -366,7 +394,7 @@ public class BoardDAO {
 				pstmt.setInt(3, board.getBoard_num());
 			}
 			
-			updateCount = pstmt.executeUpdate();
+			searchcount = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("BoardDAO - updateBoard()");
 			e.printStackTrace();
@@ -375,8 +403,9 @@ public class BoardDAO {
 			JdbcUtil.close(pstmt);
 		}
 		
-		return updateCount;
+		return searchcount;
 	}
+	
 	
 	// 답글 쓰기
 	public int insertReplyBoard(BoardBean board) {
