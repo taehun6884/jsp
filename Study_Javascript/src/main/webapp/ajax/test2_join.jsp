@@ -6,18 +6,39 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<script src="js/jquery-3.6.3.js"></script>
 <script type="text/javascript">
-	function emailCheck(value){
-		document.fr.email2.value = value;
-		for(options of document.fr.selectDomain){
-			if(options.selected && value == ""){
-				options.disabled = true;
-			}else{
-				options.disabled = false;
+	$(function(){
+		 $("#id").on("change",function(){
+			$.ajax({
+				url:"MemberCheckId.me",
+				data:{
+					id: $("#id").val(),
+				},
+				success : function(result) {
+					if(result == "true"){
+						$("#checkIdResult").html("이미 존재 하는 아이디").css("color","red");					
+					}else{
+						$("#checkIdResult").html("사용 가능한 아이디").css("color","blue");	
+					}
+				}
+			});
+		 });
+		$("#selectDomain").on("change",function(){
+			let domain = $("#selectDomain").val();
+			$("#email2").val(domain);
+			if(domain == ""){
+				$("#email2").attr("readonly",false);
+				$("#email2").css("background","white");
+				$("#email2").focus();
+			}else {
+				$("#email2").prop("readonly",true);				
+				$("#email2").css("background","lightgray");
 			}
-		}
-	}
+		});
+	
+	
+	});
 </script>
 </head>
 <body>
@@ -26,7 +47,7 @@
 <%-- 		<jsp:include page="/inc/top.jsp"></jsp:include> --%>
 	</header>
 	<h1>회원 가입</h1>
-	<form action="MemberJoinPro.me" method="post" name="fr">
+	<form action="" method="post" name="fr">
 		<table border="1">
 			<tr>
 				<td>이름</td>
@@ -43,8 +64,8 @@
 				<td>E-Mail</td>
 				<td>
 					<input type="text" name="email1" required="required" size="10">@
-					<input type="text" name="email2"  required="required" size="10">
-					<select name="selectDomain" onchange="emailCheck(this.value)">
+					<input type="text" name="email2" id="email2" required="required" size="10">
+					<select name="selectDomain" id="selectDomain">
 						<option value="">직접입력</option>	
 						<option value="naver.com">naver.com</option>
 						<option value="nate.com">nate.com</option>
