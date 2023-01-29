@@ -31,16 +31,20 @@
 	     $('삽입할내용').insertBefore('선택자');
 	*/
 	$(function() {
-// 		$("#wrap_append").append("<div>append() 로 삽입한 div 태그</div>");
-		$("<div>appendTo() 로 삽입한 div 태그</div>").appendTo("#wrap_append");
-// 		$("#wrap_prepend").prepend("<div>prepend() 로 삽입한 div 태그</div>");
-		$("<div>prependTo() 로 삽입한 div 태그</div>").prependTo("#wrap_prepend");
+		$("#wrap_append").append("<div>append() 로 삽입한 div 태그</div>");
+// 		$("<div>appendTo() 로 삽입한 div 태그</div>").appendTo("#wrap_append");
 		
-// 		$("#wrap_after").after("<div>after() 로 삽입한 div 태그</div>");
-		$("<div>insertAfter() 로 삽입한 div 태그</div>").insertAfter("#wrap_after");
-// 		$("#wrap_before").before("<div>before() 로 삽입한 div 태그</div>");
-		$("<div>insertBefore() 로 삽입한 div 태그</div>").insertBefore("#wrap_before");
+		$("#wrap_prepend").prepend("<div>prepend() 로 삽입한 div 태그</div>");
+// 		$("<div>prependTo() 로 삽입한 div 태그</div>").prependTo("#wrap_prepend");
 		
+		$("#wrap_after").after("<div>after() 로 삽입한 div 태그</div>");
+// 		$("<div>insertAfter() 로 삽입한 div 태그</div>").insertAfter("#wrap_after");
+		
+		$("#wrap_before").before("<div>before() 로 삽입한 div 태그</div>");
+// 		$("<div>insertBefore() 로 삽입한 div 태그</div>").insertBefore("#wrap_before");
+		
+		// 결과 확인을 위해 textarea("ta") 에 전체 태그 출력
+		$("#ta").val($("#wrap").html());
 	});
 </script>
 </head>
